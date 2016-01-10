@@ -6,5 +6,17 @@ using System.Threading.Tasks;
 
 namespace GameApplication {
     class Game {
+        public void Initialize() {
+
+        }
+        public void Update(float dTime) {
+
+        }
+        public void Render() {
+
+        }
+        public void Shutdown() {
+
+        }
     }
 }

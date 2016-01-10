@@ -16,6 +16,9 @@ namespace GameApplication {
 
         public static void Initialize(object sender, EventArgs e) {
             TheGame.Initialize();
+            Console.WriteLine(GL.GetString(StringName.Vendor));
+            Console.WriteLine(GL.GetString(StringName.Renderer));
+            Console.WriteLine(GL.GetString(StringName.Version));
         }
         public static void Update(object sender, FrameEventArgs e) {
             float dTime = (float)e.Time;
@@ -26,6 +29,16 @@ namespace GameApplication {
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
             TheGame.Render();
+
+            float lineWidth = 0.5f;
+            for (float lineY = 1.0f;lineY > -1.0f;lineY -= 0.25f) {
+                GL.LineWidth(lineWidth);
+                GL.Begin(PrimitiveType.Lines);
+                    GL.Vertex3(-0.9f, lineY, 0.0f);
+                    GL.Vertex3(-0.1f, lineY, 0.0f);
+                GL.End();
+                lineWidth += 1.0f;
+            }
 
             Window.SwapBuffers();
         }
