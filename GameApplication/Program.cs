@@ -12,7 +12,7 @@ namespace GameApplication {
         //global reference
         public static OpenTK.GameWindow Window = null;
         public static bool IsFullScreen = false;
-        public static Game TheGame = null;
+        public static Polygons TheGame = null;
 
         public static void Initialize(object sender, EventArgs e) {
             TheGame.Initialize();
@@ -29,16 +29,6 @@ namespace GameApplication {
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
             TheGame.Render();
-
-            float lineWidth = 0.5f;
-            for (float lineY = 1.0f;lineY > -1.0f;lineY -= 0.25f) {
-                GL.LineWidth(lineWidth);
-                GL.Begin(PrimitiveType.Lines);
-                    GL.Vertex3(-0.9f, lineY, 0.0f);
-                    GL.Vertex3(-0.1f, lineY, 0.0f);
-                GL.End();
-                lineWidth += 1.0f;
-            }
 
             Window.SwapBuffers();
         }
@@ -66,7 +56,7 @@ namespace GameApplication {
         public static void Main(string[] args) {
             //create new window
             Window = new MainGameWindow();
-            TheGame = new Game();
+            TheGame = new Polygons();
             Window.Load += new EventHandler<EventArgs>(Initialize);
             Window.UpdateFrame += new EventHandler<FrameEventArgs>(Update);
             Window.RenderFrame += new EventHandler<FrameEventArgs>(Render);
