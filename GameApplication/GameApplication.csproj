@@ -55,9 +55,12 @@
     <Compile Include="Game.cs" />
     <Compile Include="Grid.cs" />
     <Compile Include="LinesSample.cs" />
+    <Compile Include="LookAtSample.cs" />
     <Compile Include="Polygons.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RotateSample.cs" />
+    <Compile Include="ScaleSample.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

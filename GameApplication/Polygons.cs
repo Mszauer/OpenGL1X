@@ -8,14 +8,14 @@ using System.Drawing;
 using OpenTK.Graphics.OpenGL;
 
 namespace GameApplication {
-    class Polygons {
-        public void Initialize() {
+    class Polygons : Game{
+        public override void Initialize() {
 
         }
-        public void Update(float dTime) {
+        public override void Update(float dTime) {
 
         }
-        public void Render() {
+        public override void Render() {
             /*
             GL.Enable(EnableCap.CullFace);
             GL.CullFace(CullFaceMode.Back);
@@ -157,7 +157,7 @@ namespace GameApplication {
             // Reset polygon modes for next render
             GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
         }
-        public void Shutdown() {
+        public override void Shutdown() {
 
         }
     }

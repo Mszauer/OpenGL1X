@@ -12,7 +12,8 @@ namespace GameApplication {
         //global reference
         public static OpenTK.GameWindow Window = null;
         public static bool IsFullScreen = false;
-        public static Polygons TheGame = null;
+        public static Game TheGame = null;
+        public static Grid Axiis = null;
 
         public static void Initialize(object sender, EventArgs e) {
             TheGame.Initialize();
@@ -27,7 +28,7 @@ namespace GameApplication {
         public static void Render(object sender, FrameEventArgs e) {
             GL.ClearColor(Color.CadetBlue);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-
+            //Axiis.Render();
             TheGame.Render();
 
             Window.SwapBuffers();
@@ -56,7 +57,8 @@ namespace GameApplication {
         public static void Main(string[] args) {
             //create new window
             Window = new MainGameWindow();
-            TheGame = new Polygons();
+            Axiis = new Grid();
+            TheGame = new LookAtSample();
             Window.Load += new EventHandler<EventArgs>(Initialize);
             Window.UpdateFrame += new EventHandler<FrameEventArgs>(Update);
             Window.RenderFrame += new EventHandler<FrameEventArgs>(Render);

@@ -9,14 +9,14 @@ using OpenTK.Graphics.OpenGL;
 
 
 namespace GameApplication {
-    class LinesSample {
-        public void Initialize() {
+    class LinesSample :Game {
+        public override void Initialize() {
 
         }
-        public void Update(float dTime) {
+        public override void Update(float dTime) {
 
         }
-        public void Render() {
+        public override void Render() {
             float lineWidth = 0.5f;
             for (float lineY = 1.0f; lineY > -1.0f; lineY -= 0.25f) {
                 GL.LineWidth(lineWidth);
@@ -27,7 +27,7 @@ namespace GameApplication {
                 lineWidth += 1.0f;
             }
         }
-        public void Shutdown() {
+        public override void Shutdown() {
 
         }
     }
