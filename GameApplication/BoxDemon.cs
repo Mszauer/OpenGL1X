@@ -46,24 +46,55 @@ namespace GameApplication {
 
         }
         public override void Render() {
+            //set up projections
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadIdentity();
-            GL.Ortho(-1, 1, -1, 1, -1, 1);
+            GL.Ortho(-1, 1, -1, 1, -10, 10);
+            //get into model space
+            GL.MatrixMode(MatrixMode.Modelview);
+            GL.LoadIdentity();
+            GL.PushMatrix();
+            //position camera
             LookAt(
                     0.5f, 0.5f, 0.5f,
                     0.0f, 0.0f, 0.0f,
                     0.0f, 1.0f, 0.0f
                 );
-            GL.MatrixMode(MatrixMode.Modelview);
+            //draw grid
+            GL.PushMatrix();
+
             grid.Render();
-            GL.LoadIdentity();
+            GL.PushMatrix();
+            //move render position
             GL.Translate(0.0f, 0.0f, -0.25f);
             GL.Translate(0.25f, 0.0f, 0.0f);
             GL.Rotate(45.0f, 1.0f, 0.0f, 0.0f);
             GL.Rotate(73.0f, 0.0f, 1.0f, 0.0f);
             GL.Scale(0.05f, 0.05f, 0.05f);
-
+            //draw red cube
             GL.Color3(1.0f, 0.0f, 0.0f);
+            DrawCube();
+            //reset position to origin
+            GL.PopMatrix();
+            GL.PushMatrix();
+            //move into new position
+            GL.Translate(-0.25f, 0.0f, 0.25f);
+            GL.Rotate(33.0f, 0.0f, 0.0f, 1.0f);
+            GL.Rotate(97.0, 0.0f, 1.0f, 0.0f);
+            GL.Scale(0.05f, 0.05f, 0.05f);
+            //draw green cube
+            GL.Color3(0.0f, 1.0f, 0.0f);
+            DrawCube();
+            GL.PopMatrix();
+
+            GL.PushMatrix();
+            //move into new position
+            GL.Translate(0.0f, 0.25f, 0.25f);
+            GL.Rotate(33.0f, 0.0f, 0.0f, 1.0f);
+            GL.Rotate(53.0, 0.0f, 1.0f, 0.0f);
+            GL.Scale(0.05f, 0.05f, 0.05f);
+            //draw green cube
+            GL.Color3(0.0f, -.0f, 1.0f);
             DrawCube();
         }
         public override void Shutdown() {
