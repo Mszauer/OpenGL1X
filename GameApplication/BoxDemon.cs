@@ -50,19 +50,17 @@ namespace GameApplication {
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadIdentity();
             GL.Ortho(-1, 1, -1, 1, -10, 10);
+
             //get into model space
             GL.MatrixMode(MatrixMode.Modelview);
             GL.LoadIdentity();
-            GL.PushMatrix();
             //position camera
             LookAt(
-                    0.5f, 0.5f, 0.5f,
-                    0.0f, 0.0f, 0.0f,
-                    0.0f, 1.0f, 0.0f
-                );
-            //draw grid
-            GL.PushMatrix();
-
+                0.5f, 0.5f, 0.5f,
+                0.0f, 0.0f, 0.0f,
+                0.0f, 1.0f, 0.0f
+            );
+            //draw grid    
             grid.Render();
             GL.PushMatrix();
             //move render position
@@ -96,6 +94,7 @@ namespace GameApplication {
             //draw green cube
             GL.Color3(0.0f, -.0f, 1.0f);
             DrawCube();
+            GL.PopMatrix();
         }
         public override void Shutdown() {
 
