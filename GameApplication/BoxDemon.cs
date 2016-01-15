@@ -46,12 +46,16 @@ namespace GameApplication {
 
         }
         public override void Render() {
-            grid.Render();
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadIdentity();
             GL.Ortho(-1, 1, -1, 1, -1, 1);
-
+            LookAt(
+                    0.5f, 0.5f, 0.5f,
+                    0.0f, 0.0f, 0.0f,
+                    0.0f, 1.0f, 0.0f
+                );
             GL.MatrixMode(MatrixMode.Modelview);
+            grid.Render();
             GL.LoadIdentity();
             GL.Translate(0.0f, 0.0f, -0.25f);
             GL.Translate(0.25f, 0.0f, 0.0f);
