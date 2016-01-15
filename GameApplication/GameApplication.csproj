@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BoxDemon.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Grid.cs" />
     <Compile Include="LinesSample.cs" />

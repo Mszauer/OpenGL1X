@@ -58,7 +58,7 @@ namespace GameApplication {
             //create new window
             Window = new MainGameWindow();
             Axiis = new Grid();
-            TheGame = new LookAtSample();
+            TheGame = new BoxDemon();
             Window.Load += new EventHandler<EventArgs>(Initialize);
             Window.UpdateFrame += new EventHandler<FrameEventArgs>(Update);
             Window.RenderFrame += new EventHandler<FrameEventArgs>(Render);
