@@ -46,20 +46,20 @@ namespace GameApplication {
 
         }
         public override void Render() {
-            GL.MatrixMode(MatrixMode.Modelview);
+            grid.Render();
+            GL.MatrixMode(MatrixMode.Projection);
             GL.LoadIdentity();
             GL.Ortho(-1, 1, -1, 1, -1, 1);
-            LookAt(0.5f, 0.5f, 0.5f,//position
-                   0.0f, 0.0f, 0.0f,//target
-                   0.0f, 1.0f, 0.0f/*up*/);
-            grid.Render();
-            GL.Color3(1.0f, 0.0f, 0.0f);
+
+            GL.MatrixMode(MatrixMode.Modelview);
             GL.LoadIdentity();
             GL.Translate(0.0f, 0.0f, -0.25f);
             GL.Translate(0.25f, 0.0f, 0.0f);
             GL.Rotate(45.0f, 1.0f, 0.0f, 0.0f);
             GL.Rotate(73.0f, 0.0f, 1.0f, 0.0f);
             GL.Scale(0.05f, 0.05f, 0.05f);
+
+            GL.Color3(1.0f, 0.0f, 0.0f);
             DrawCube();
         }
         public override void Shutdown() {
