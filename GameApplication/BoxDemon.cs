@@ -46,17 +46,21 @@ namespace GameApplication {
 
         }
         public override void Render() {
+            GL.Viewport(0, 0, MainGameWindow.Window.Width, MainGameWindow.Window.Height);
+
+            float aspect = (float)MainGameWindow.Window.Width / (float)MainGameWindow.Window.Height;
             //set up projections
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadIdentity();
-            GL.Ortho(-1, 1, -1, 1, -10, 10);
+            Perspective(60.0f, aspect, 0.1f, 100.0f);
+            //GL.Ortho(-1*aspect, 1*aspect, -1, 1, -10, 10);
 
             //get into model space
             GL.MatrixMode(MatrixMode.Modelview);
             GL.LoadIdentity();
             //position camera
             LookAt(
-                0.5f, 0.5f, 0.5f,
+                10.0f, 10.0f, 10.0f,
                 0.0f, 0.0f, 0.0f,
                 0.0f, 1.0f, 0.0f
             );
@@ -98,6 +102,11 @@ namespace GameApplication {
         }
         public override void Shutdown() {
 
+        }
+        public static void Perspective(float fov, float aspectRatio, float znear, float zfar) {
+            float yMax = znear * (float)Math.Tan(fov * Math.PI / 360.0f);
+            float xMax = yMax * aspectRatio;
+            GL.Frustum(-xMax, xMax, -yMax, yMax, znear, zfar);
         }
         public static void DrawCube() {
             GL.Begin(PrimitiveType.Triangles);

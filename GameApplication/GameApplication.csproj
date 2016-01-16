@@ -57,6 +57,7 @@
     <Compile Include="Grid.cs" />
     <Compile Include="LinesSample.cs" />
     <Compile Include="LookAtSample.cs" />
+    <Compile Include="MrRoboto.cs" />
     <Compile Include="Polygons.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
