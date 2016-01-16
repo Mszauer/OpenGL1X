@@ -140,63 +140,63 @@ namespace GameApplication {
             //save matrix state
             GL.PushMatrix();
 
-            //translate robot to desired coordinates
-            GL.Translate(worldX, worldY, worldZ);
+                //translate robot to desired coordinates
+                GL.Translate(worldX, worldY, worldZ);
 
-            //draw head
-            GL.Color3(1.0f, 0.0f, 0.0f);//red
-            GL.PushMatrix();
-            GL.Translate(1.0f, 4.0f, 0.0f);
-            GL.Scale(0.5f, 0.5f, 0.5f);
-            DrawCube();
-            GL.PopMatrix();//finish head
-            //draw body
-            GL.Color3(0.0f, 1.0f, 0.0f);//green
-            GL.PushMatrix();
-            GL.Translate(1.0f, 2.5f, 0.0f);
-            GL.Scale(0.75f, 1.0f, 0.5f);
-            DrawCube();
-            GL.PopMatrix();
-            //draw left arm
-            GL.Color3(1.0f, 0.0f, 1.0f);//magenta
-            GL.PushMatrix();
-            GL.Translate(0.0f, 2.25f, 0.0f);
-            GL.Scale(0.25f, 1.0f, 0.25f);
-            DrawCube();
-            GL.PopMatrix();
-            //draw right arm
-            GL.Color3(0.0f, 0.0f, 1.0f);//blue
-            GL.PushMatrix();
-            GL.Translate(2.0f, 2.25f, 0.0f);
-            GL.Scale(0.25f, 1.0f, 0.25f);
-            DrawCube();
-            GL.PopMatrix();
-            //draw left leg
-            GL.Color3(1.0f, 1.0f, 0.0f);//yellow
-            GL.PushMatrix();
-            GL.Translate(0.5f, 0.5f, 0.0f);
-            GL.Scale(0.25f, 1.0f, 0.25f);
-            DrawCube();
-            //draw left foot
-            GL.PushMatrix();
-            GL.Translate(0.0f, -1.0f, 1.0f);
-            GL.Scale(1.0f, 0.25f, 2.0f);
-            DrawCube();
-            GL.PopMatrix();
-            GL.PopMatrix();
-            //Draw Right leg
-            GL.Color3(0.0f, 1.0f, 1.0f);//baby blue
-            GL.PushMatrix();
-            GL.Translate(1.5f, 0.5f, 0.0f);
-            GL.Scale(0.25f, 1.0f, 0.25f);
-            DrawCube();
-            //draw right food
-            GL.PushMatrix();
-            GL.Translate(0.0f, -1.0f, 1.0f);
-            GL.Scale(1.0f, 0.25f, 2.0f);
-            DrawCube();
-            GL.PopMatrix();//foot pop
-            GL.PopMatrix();//leg pop
+                //draw head
+                GL.Color3(1.0f, 0.0f, 0.0f);//red
+                GL.PushMatrix();
+                    GL.Translate(1.0f, 4.0f, 0.0f);
+                    GL.Scale(0.5f, 0.5f, 0.5f);
+                    DrawCube();
+                GL.PopMatrix();//finish head
+                //draw body
+                GL.Color3(0.0f, 1.0f, 0.0f);//green
+                GL.PushMatrix();
+                    GL.Translate(1.0f, 2.5f, 0.0f);
+                    GL.Scale(0.75f, 1.0f, 0.5f);
+                    DrawCube();
+                GL.PopMatrix();
+                //draw left arm
+                GL.Color3(1.0f, 0.0f, 1.0f);//magenta
+                GL.PushMatrix();
+                    GL.Translate(0.0f, 2.25f, 0.0f);
+                    GL.Scale(0.25f, 1.0f, 0.25f);
+                    DrawCube();
+                GL.PopMatrix();
+                //draw right arm
+                GL.Color3(0.0f, 0.0f, 1.0f);//blue
+                GL.PushMatrix();
+                    GL.Translate(2.0f, 2.25f, 0.0f);
+                    GL.Scale(0.25f, 1.0f, 0.25f);
+                    DrawCube();
+                GL.PopMatrix();
+                //draw left leg
+                GL.Color3(1.0f, 1.0f, 0.0f);//yellow
+                GL.PushMatrix();
+                    GL.Translate(0.5f, 0.5f, 0.0f);
+                    GL.Scale(0.25f, 1.0f, 0.25f);
+                    DrawCube();
+                //draw left foot
+                    GL.PushMatrix();
+                        GL.Translate(0.0f, -1.0f, 1.0f);
+                        GL.Scale(1.0f, 0.25f, 2.0f);
+                        DrawCube();
+                    GL.PopMatrix();
+                GL.PopMatrix();
+                //Draw Right leg
+                GL.Color3(0.0f, 1.0f, 1.0f);//baby blue
+                GL.PushMatrix();
+                    GL.Translate(1.5f, 0.5f, 0.0f);
+                    GL.Scale(0.25f, 1.0f, 0.25f);
+                    DrawCube();
+                    //draw right food
+                    GL.PushMatrix();
+                        GL.Translate(0.0f, -1.0f, 1.0f);
+                        GL.Scale(1.0f, 0.25f, 2.0f);
+                        DrawCube();
+                    GL.PopMatrix();//foot pop
+                GL.PopMatrix();//leg pop
             GL.PopMatrix();//pop first matrix push
         }
     }
