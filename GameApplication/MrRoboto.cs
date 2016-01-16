@@ -54,7 +54,7 @@ namespace GameApplication {
             GL.Translate(-eyeX, -eyeY, -eyeZ);
         }
         public static void Perspective(float fov, float aspectRatio, float zNear, float zFar) {
-            float yMax = (float)Math.Tan(fov * (Math.PI / 360.0f));
+            float yMax = zNear * (float)Math.Tan(fov * (Math.PI / 360.0f));
             float xMax = yMax * aspectRatio;
             GL.Frustum(-xMax, xMax, -yMax, yMax, zNear, zFar);
         }
@@ -103,7 +103,7 @@ namespace GameApplication {
             leftArmRot += 50.0f * dTime * leftArmDir;
             rightArmRot += 50.0f * dTime * rightArmDir;
             leftLegRot += 50.0f * dTime * leftLegDir;
-            rightLegRot += 50.0f * dTime * rightLegRot;
+            rightLegRot += 50.0f * dTime * rightLegDir;
 
             //clamp and change dir
             if (leftArmRot > 20.0f || leftArmRot < -20.0f) {
@@ -161,6 +161,9 @@ namespace GameApplication {
                 GL.Color3(1.0f, 0.0f, 1.0f);//magenta
                 GL.PushMatrix();
                     GL.Translate(0.0f, 2.25f, 0.0f);
+                    GL.Translate(0.0f, 1.0f, 0.0f);//unPivot
+                    GL.Rotate(leftArmRot, 1.0f, 0.0f, 0.0f);
+                    GL.Translate(0.0f, -1.0f, 0.0f);
                     GL.Scale(0.25f, 1.0f, 0.25f);
                     DrawCube();
                 GL.PopMatrix();
@@ -168,6 +171,9 @@ namespace GameApplication {
                 GL.Color3(0.0f, 0.0f, 1.0f);//blue
                 GL.PushMatrix();
                     GL.Translate(2.0f, 2.25f, 0.0f);
+                    GL.Translate(0.0f, 1.0f, 0.0f);
+                    GL.Rotate(rightArmRot, 1.0f, 0.0f, 0.0f);
+                    GL.Translate(0.0f, -1.0f, 0.0f);
                     GL.Scale(0.25f, 1.0f, 0.25f);
                     DrawCube();
                 GL.PopMatrix();
@@ -175,6 +181,9 @@ namespace GameApplication {
                 GL.Color3(1.0f, 1.0f, 0.0f);//yellow
                 GL.PushMatrix();
                     GL.Translate(0.5f, 0.5f, 0.0f);
+                    GL.Translate(0.0f, 1.0f, 0.0f);
+                    GL.Rotate(leftLegRot, 1.0f, 0.0f, 0.0f);
+                    GL.Translate(0.0f, -1.0f, 0.0f);
                     GL.Scale(0.25f, 1.0f, 0.25f);
                     DrawCube();
                 //draw left foot
@@ -188,6 +197,9 @@ namespace GameApplication {
                 GL.Color3(0.0f, 1.0f, 1.0f);//baby blue
                 GL.PushMatrix();
                     GL.Translate(1.5f, 0.5f, 0.0f);
+                    GL.Translate(0.0f, 1.0f, 0.0f);
+                    GL.Rotate(rightLegRot, 1.0f, 0.0f, 0.0f);
+                    GL.Translate(0.0f, -1.0f, 0.0f);
                     GL.Scale(0.25f, 1.0f, 0.25f);
                     DrawCube();
                     //draw right food
