@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OpenTK.Graphics.OpenGL;
+using Math_Implementation;
 
 namespace GameApplication {
     class MrRoboto : Game{
@@ -56,7 +57,9 @@ namespace GameApplication {
         public static void Perspective(float fov, float aspectRatio, float zNear, float zFar) {
             float yMax = zNear * (float)Math.Tan(fov * (Math.PI / 360.0f));
             float xMax = yMax * aspectRatio;
-            GL.Frustum(-xMax, xMax, -yMax, yMax, zNear, zFar);
+            //GL.Frustum(-xMax, xMax, -yMax, yMax, zNear, zFar);
+            Matrix4 frustum = Matrix4.Frustum(-xMax, xMax, -yMax, yMax, zNear, zFar);
+            GL.MultMatrix(Matrix4.Transpose(frustum).Matrix);
         }
         public static void DrawCube() {
             GL.Begin(PrimitiveType.Triangles);
@@ -128,11 +131,18 @@ namespace GameApplication {
 
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadIdentity();
-            Perspective(60.0f, (float)MainGameWindow.Window.Width / (float)MainGameWindow.Window.Height, 0.01f, 1000.0f);
+            //Perspective(60.0f, (float)MainGameWindow.Window.Width / (float)MainGameWindow.Window.Height, 0.01f, 1000.0f);
+            float aspect = (float)MainGameWindow.Window.Width / (float)MainGameWindow.Window.Height;
+            GL.Ortho(-25.0f * aspect, 25.0f * aspect, -25.0f, 25.0f, -25.0f, 25.0f);
+            Matrix4 ortho = Matrix4.Ortho(-25.0f * aspect, 25.0f*aspect, -25.0f, 25.0f, -25.0f, 25.0f);
+            GL.LoadMatrix(Matrix4.Transpose(ortho).Matrix);
 
             GL.MatrixMode(MatrixMode.Modelview);
             GL.LoadIdentity();
-            LookAt(10.0f, 5.0f, 15.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+            //LookAt(10.0f, 5.0f, 15.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+            Matrix4 lookAt = Matrix4.LookAt(new Vector3(10.0f, 5.0f, 15.0f), new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 1.0f, 0.0f));
+            GL.MultMatrix(Matrix4.Transpose(lookAt).Matrix);
+
             grid.Render();
             DrawRobot(-1.0f, 1.0f, 0.0f);
         }
