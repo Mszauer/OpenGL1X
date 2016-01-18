@@ -16,7 +16,7 @@ namespace Math_Implementation {
                 Matrix[i] = value;
             }
         }
-        public float this[int i,int j] {
+        public float this[int i, int j] {
             get {
                 return Matrix[(i * 4) + j];
             }
@@ -41,10 +41,10 @@ namespace Math_Implementation {
             }
         }
         //scalar operators
-        public static Matrix4 operator +(Matrix4 matrixA,Matrix4 matrixB) {
+        public static Matrix4 operator +(Matrix4 matrixA, Matrix4 matrixB) {
             Matrix4 result = new Matrix4();
             for (int i = 0; i < 4; i++) {
-                for(int j = 0; j < 4; j++) {
+                for (int j = 0; j < 4; j++) {
                     result[i, j] = matrixA[i, j] + matrixB[i, j];
                 }
             }
@@ -94,7 +94,7 @@ namespace Math_Implementation {
             return !(matrixA == matrixB);
         }
         //vector*matrix
-        public static Vector4 operator * (Matrix4 matrixA,Vector4 vectorA) {
+        public static Vector4 operator *(Matrix4 matrixA, Vector4 vectorA) {
             Vector4 result = new Vector4();
             result[0] = (matrixA[0, 0] * vectorA[0]) + (matrixA[0, 1] * vectorA[1]) + (matrixA[0, 2] * vectorA[2]) + (matrixA[0, 3] * vectorA[3]);
             result[1] = (matrixA[1, 0] * vectorA[0]) + (matrixA[1, 1] * vectorA[1]) + (matrixA[1, 2] * vectorA[2]) + (matrixA[1, 3] * vectorA[3]);
@@ -103,7 +103,7 @@ namespace Math_Implementation {
             return result;
         }
         //matrix matrix multiplication
-        public static Matrix4 operator *(Matrix4 matrixA,Matrix4 matrixB) {
+        public static Matrix4 operator *(Matrix4 matrixA, Matrix4 matrixB) {
             Matrix4 result = new Matrix4();
             result[0, 0] = matrixA[0, 0] * matrixB[0, 0] + matrixA[0, 1] * matrixB[1, 0] + matrixA[0, 2] * matrixB[2, 0] + matrixA[0, 3] * matrixB[3, 0];
             result[0, 1] = matrixA[0, 0] * matrixB[0, 1] + matrixA[0, 1] * matrixB[1, 1] + matrixA[0, 2] * matrixB[2, 1] + matrixA[0, 3] * matrixB[3, 1];
@@ -123,14 +123,14 @@ namespace Math_Implementation {
             result[3, 0] = matrixA[3, 0] * matrixB[0, 0] + matrixA[3, 1] * matrixB[1, 0] + matrixA[3, 2] * matrixB[2, 0] + matrixA[3, 3] * matrixB[3, 0];
             result[3, 1] = matrixA[3, 0] * matrixB[0, 1] + matrixA[3, 1] * matrixB[1, 1] + matrixA[3, 2] * matrixB[2, 1] + matrixA[3, 3] * matrixB[3, 1];
             result[3, 2] = matrixA[3, 0] * matrixB[0, 2] + matrixA[3, 1] * matrixB[1, 2] + matrixA[3, 2] * matrixB[2, 2] + matrixA[3, 3] * matrixB[3, 2];
-            result[3, 3] = matrixA[3, 0] * matrixB[0, 3] + matrixA[3, 1] * matrixB[1, 3] + matrixA[3, 3] * matrixB[2, 3] + matrixA[3, 3] * matrixB[3, 3];
+            result[3, 3] = matrixA[3, 0] * matrixB[0, 3] + matrixA[3, 1] * matrixB[1, 3] + matrixA[3, 2] * matrixB[2, 3] + matrixA[3, 3] * matrixB[3, 3];
             return result;
         }
         //transpose
         public static Matrix4 Transpose(Matrix4 matrixA) {
             Matrix4 result = new Matrix4();
-            for(int i= 0; i < 4; i++) {
-                for(int j = 0; j < 4; j++) {
+            for (int i = 0; i < 4; i++) {
+                for (int j = 0; j < 4; j++) {
                     result[i, j] = matrixA[j, i];
                 }
             }
@@ -222,25 +222,25 @@ namespace Math_Implementation {
             float v2 = v * v;
             float w2 = w * w;
 
-            result[0,0] = (u2 + (v2 + w2) * (float)Math.Cos(angle)) / L;
-            result[0,1] = (u * v * (1 - (float)Math.Cos(angle)) - w * l * (float)Math.Sin(angle)) / L;
-            result[0,2] = (u * w * (1 - (float)Math.Cos(angle)) + v * l * (float)Math.Sin(angle)) / L;
-            result[0,3] = 0.0f;
+            result[0, 0] = (u2 + (v2 + w2) * (float)Math.Cos(angle)) / L;
+            result[0, 1] = (u * v * (1 - (float)Math.Cos(angle)) - w * l * (float)Math.Sin(angle)) / L;
+            result[0, 2] = (u * w * (1 - (float)Math.Cos(angle)) + v * l * (float)Math.Sin(angle)) / L;
+            result[0, 3] = 0.0f;
 
-            result[1,0] = (u * v * (1 - (float)Math.Cos(angle)) + w * l * (float)Math.Sin(angle)) / L;
-            result[1,1] = (v2 + (u2 + w2) * (float)Math.Cos(angle)) / L;
-            result[1,2] = (v * w * (1 - (float)Math.Cos(angle)) - u * l * (float)Math.Sin(angle)) / L;
-            result[1,3] = 0.0f;
+            result[1, 0] = (u * v * (1 - (float)Math.Cos(angle)) + w * l * (float)Math.Sin(angle)) / L;
+            result[1, 1] = (v2 + (u2 + w2) * (float)Math.Cos(angle)) / L;
+            result[1, 2] = (v * w * (1 - (float)Math.Cos(angle)) - u * l * (float)Math.Sin(angle)) / L;
+            result[1, 3] = 0.0f;
 
-            result[2,0] = (u * w * (1 - (float)Math.Cos(angle)) - v * l * (float)Math.Sin(angle)) / L;
-            result[2,1] = (v * w * (1 - (float)Math.Cos(angle)) + u * l * (float)Math.Sin(angle)) / L;
-            result[2,2] = (w2 + (u2 + v2) * (float)Math.Cos(angle)) / L;
-            result[2,3] = 0.0f;
+            result[2, 0] = (u * w * (1 - (float)Math.Cos(angle)) - v * l * (float)Math.Sin(angle)) / L;
+            result[2, 1] = (v * w * (1 - (float)Math.Cos(angle)) + u * l * (float)Math.Sin(angle)) / L;
+            result[2, 2] = (w2 + (u2 + v2) * (float)Math.Cos(angle)) / L;
+            result[2, 3] = 0.0f;
 
-            result[3,0] = 0.0f;
-            result[3,1] = 0.0f;
-            result[3,2] = 0.0f;
-            result[3,3] = 1.0f;
+            result[3, 0] = 0.0f;
+            result[3, 1] = 0.0f;
+            result[3, 2] = 0.0f;
+            result[3, 3] = 1.0f;
             return result;
         }
         public static Matrix4 Translate(Vector3 vectorA) {
@@ -273,7 +273,7 @@ namespace Math_Implementation {
             result[2] = (matrixA[2, 0] * vectorA[0]) + (matrixA[2, 1] * vectorA[1]) + (matrixA[2, 2] * vectorA[2]) + (matrixA[2, 3] * 1.0f);
             return result;
         }
-        public static Matrix4 Ortho(float left, float right, float bottom, float top,float near, float far) {
+        public static Matrix4 Ortho(float left, float right, float bottom, float top, float near, float far) {
             Matrix4 result = new Matrix4();
             result[0, 0] = 2.0f / (right - left);
             result[0, 3] = -((right + left) / (right - left));
@@ -296,17 +296,17 @@ namespace Math_Implementation {
             result[3, 3] = 0.0f;
             return result;
         }
-        public static Matrix4 LookAt(Vector3 position,Vector3 target,Vector3 worldUp) {
-            Vector3 cameraForward = Vector3.Normalize(position-target);
-            Vector3 cameraRight = Vector3.Normalize(Vector3.Cross(worldUp, cameraForward));
-            Vector3 cameraUp = Vector3.Cross(cameraForward, cameraRight);
+        public static Matrix4 LookAt(Vector3 position, Vector3 target, Vector3 worldUp) {
+            Vector3 cameraForward = Vector3.Normalize(target - position);
+            Vector3 cameraRight = Vector3.Normalize(Vector3.Cross(cameraForward, worldUp));
+            Vector3 cameraUp = Vector3.Cross(cameraRight, cameraForward);
 
-            Matrix4 rot = new Matrix4(cameraRight.X, cameraUp.X, cameraForward.X, 0.0f,
-                                      cameraRight.Y, cameraUp.Y, cameraForward.Y, 0.0f,
-                                      cameraRight.Z, cameraUp.Z, cameraForward.Z, 0.0f,
+            Matrix4 rot = new Matrix4(cameraRight.X, cameraUp.X, -cameraForward.X, 0.0f,
+                                      cameraRight.Y, cameraUp.Y, -cameraForward.Y, 0.0f,
+                                      cameraRight.Z, cameraUp.Z, -cameraForward.Z, 0.0f,
                                       0.0f, 0.0f, 0.0f, 1.0f);
-            Matrix4 trans = Matrix4.Translate(position*-1.0f);
-            return Transpose(rot) * trans;
+            Matrix4 trans = Translate(position * -1.0f);
+            return trans * Transpose(rot);
         }
         public static Matrix4 Perspective(float fov, float aspectRatio, float zNear, float zFar) {
             float yMax = zNear * (float)Math.Tan(fov * (Math.PI / 360.0f));

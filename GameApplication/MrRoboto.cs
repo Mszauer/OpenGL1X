@@ -139,9 +139,9 @@ namespace GameApplication {
 
             GL.MatrixMode(MatrixMode.Modelview);
             GL.LoadIdentity();
-            //LookAt(10.0f, 5.0f, 15.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
-            Matrix4 lookAt = Matrix4.LookAt(new Vector3(10.0f, 5.0f, 15.0f), new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 1.0f, 0.0f));
-            GL.MultMatrix(Matrix4.Transpose(lookAt).Matrix);
+            LookAt(10.0f, 5.0f, 15.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+            //Matrix4 lookAt = Matrix4.LookAt(new Vector3(10.0f, 5.0f, 15.0f), new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 1.0f, 0.0f));
+            //GL.MultMatrix(Matrix4.Transpose(lookAt).Matrix);
 
             grid.Render();
             DrawRobot(-1.0f, 1.0f, 0.0f);
