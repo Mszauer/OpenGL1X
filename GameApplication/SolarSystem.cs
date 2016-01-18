@@ -67,12 +67,12 @@ namespace GameApplication {
             GL.LoadIdentity();
             float aspect = (float)MainGameWindow.Window.Width / (float)MainGameWindow.Window.Height;
             Matrix4 ortho = Matrix4.Ortho(-25.0f * aspect, 25.0f * aspect, -25.0f * aspect, 25.0f * aspect, -25.0f, 25.0f);
-            GL.LoadMatrix(Matrix4.Transpose(ortho).OpenGL);
+            GL.LoadMatrix(Matrix4.Transpose(ortho).Matrix);
 
             GL.MatrixMode(MatrixMode.Modelview);
             GL.LoadIdentity();
             Matrix4 lookAt = Matrix4.LookAt(new Vector3(10.0f, 5.0f, 15.0f), new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 1.0f, 0.0f));
-            GL.LoadMatrix(Matrix4.Transpose(lookAt).OpenGL);
+            GL.LoadMatrix(Matrix4.Transpose(lookAt).Matrix);
             MatrixStack stack = new MatrixStack();
             stack.Load(lookAt);
             GL.LoadMatrix(stack.OpenGL);
@@ -83,14 +83,41 @@ namespace GameApplication {
         
         protected void DrawPlanets(float worldX,float worldY, float worldZ,MatrixStack stack) {
             stack.Push();
-                
             {
+                //sun
                 Matrix4 scale = Matrix4.Scale(new Vector3(0.5f, 0.5f, 0.5f));
                 Matrix4 translation = Matrix4.Translate(new Vector3(worldX, worldY, worldZ));
                 Matrix4 model = translation * scale;
                 stack.Mul(model);
                 GL.LoadMatrix(stack.OpenGL);
                 DrawSphere(3);
+                stack.Push(); 
+                {
+                    //first planet
+                    Matrix4 p1scale = Matrix4.Scale(new Vector3(0.3f, 0.3f, 0.3f));
+                    Matrix4 p1rotation = Matrix4.AngleAxis(50.0f, 1.0f, 0.0f, 0.0f);
+                    Matrix4 p1translation = Matrix4.Translate(new Vector3(-0.15f, 0.0f, 0.0f));
+                    Matrix4 planet = p1translation * p1rotation * p1scale;
+                    stack.Mul(planet);
+                    GL.LoadMatrix(stack.OpenGL);
+                    DrawSphere(1);
+                    stack.Push();
+                    {
+                        //draw planet1 moon
+                        Matrix4 m1Scale = Matrix4.Scale(new Vector3(-0.2f, 0.05f, 0.0f));
+                        Matrix4 m1Rotation = Matrix4.AngleAxis(45.0f, 0.0f, 1.0f, 0.0f);
+                        Matrix4 m1Translation = Matrix4.Translate(new Vector3(-0.3f, 0.0f, 0.0f));
+                        Matrix4 moon = m1Translation * m1Rotation * m1Scale;
+                        stack.Mul(moon);
+                        GL.LoadMatrix(moon.OpenGL);
+                        DrawSphere(1);
+                    }
+                    stack.Pop();
+                }//end first planet
+                {
+                    //do second planet stuff here
+                }
+                stack.Pop();
             }
         }
         //circle stuff

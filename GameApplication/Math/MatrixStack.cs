@@ -27,6 +27,9 @@ namespace Math_Implementation {
         public void Mul(Matrix4 matrix) {
             stack[stack.Count - 1] = stack[stack.Count - 1] * matrix;
         }
+        public void Pop() {
+            stack.RemoveAt(stack.Count - 1);
+        }
         public float[] OpenGL {
             get {
                 return stack[stack.Count - 1].OpenGL;
