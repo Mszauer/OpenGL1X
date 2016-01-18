@@ -60,6 +60,7 @@
     <Compile Include="Math\Matrix2.cs" />
     <Compile Include="Math\Matrix3.cs" />
     <Compile Include="Math\Matrix4.cs" />
+    <Compile Include="Math\MatrixStack.cs" />
     <Compile Include="Math\Quaternion.cs" />
     <Compile Include="Math\Vector2.cs" />
     <Compile Include="Math\Vector3.cs" />
@@ -71,6 +72,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RotateSample.cs" />
     <Compile Include="ScaleSample.cs" />
+    <Compile Include="SolarSystem.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

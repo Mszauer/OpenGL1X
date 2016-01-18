@@ -306,7 +306,7 @@ namespace Math_Implementation {
                                       cameraRight.Z, cameraUp.Z, -cameraForward.Z, 0.0f,
                                       0.0f, 0.0f, 0.0f, 1.0f);
             Matrix4 trans = Translate(position * -1.0f);
-            return trans * Transpose(rot);
+            return Transpose(rot) * trans;
         }
         public static Matrix4 Perspective(float fov, float aspectRatio, float zNear, float zFar) {
             float yMax = zNear * (float)Math.Tan(fov * (Math.PI / 360.0f));
