@@ -20,43 +20,7 @@ namespace GameApplication {
             grid = new Grid();
             GL.Enable(EnableCap.DepthTest);
         }
-        protected static void LookAt(float eyeX, float eyeY, float eyeZ, float targetX, float targetY, float targetZ, float upX, float upY, float upZ) {
-            float len = (float)Math.Sqrt(upX * upX + upY * upY + upZ * upZ);
-            upX /= len; upY /= len; upZ /= len;
-
-            float[] f = { targetX - eyeX, targetY - eyeY, targetZ - eyeZ };
-            len = (float)Math.Sqrt(f[0] * f[0] + f[1] * f[1] + f[2] * f[2]);
-            f[0] /= len; f[1] /= len; f[2] /= len;
-
-            float[] s = { 0f, 0f, 0f };
-            s[0] = f[1] * upZ - f[2] * upY;
-            s[1] = f[2] * upX - f[0] * upZ;
-            s[2] = f[0] * upY - f[1] * upX;
-            len = (float)Math.Sqrt(s[0] * s[0] + s[1] * s[1] + s[2] * s[2]);
-            s[0] /= len; s[1] /= len; s[2] /= len;
-
-            float[] u = { 0f, 0f, 0f };
-            u[0] = s[1] * f[2] - s[2] * f[1];
-            u[1] = s[2] * f[0] - s[0] * f[2];
-            u[2] = s[0] * f[1] - s[1] * f[0];
-            len = (float)Math.Sqrt(s[0] * u[0] + u[1] * u[1] + u[2] * u[2]);
-            u[0] /= len; u[1] /= len; u[2] /= len;
-
-            float[] result = {s[0], u[0], -f[0], 0.0f,
-                              s[1], u[1], -f[1], 0.0f,
-                              s[2], u[2], -f[2], 0.0f,
-                              0.0f, 0.0f,  0.0f, 1.0f};
-
-            GL.MultMatrix(result);
-            GL.Translate(-eyeX, -eyeY, -eyeZ);
-        }
-        public static void Perspective(float fov, float aspectRatio, float zNear, float zFar) {
-            float yMax = zNear * (float)Math.Tan(fov * (Math.PI / 360.0f));
-            float xMax = yMax * aspectRatio;
-            //GL.Frustum(-xMax, xMax, -yMax, yMax, zNear, zFar);
-            Matrix4 frustum = Matrix4.Frustum(-xMax, xMax, -yMax, yMax, zNear, zFar);
-            GL.MultMatrix(Matrix4.Transpose(frustum).Matrix);
-        }
+        
         public override void Update(float dTime) {
             base.Update(dTime);
         }
@@ -64,15 +28,13 @@ namespace GameApplication {
             GL.Viewport(0, 0, MainGameWindow.Window.Width, MainGameWindow.Window.Height);
 
             GL.MatrixMode(MatrixMode.Projection);
-            GL.LoadIdentity();
             float aspect = (float)MainGameWindow.Window.Width / (float)MainGameWindow.Window.Height;
-            Matrix4 ortho = Matrix4.Ortho(-25.0f * aspect, 25.0f * aspect, -25.0f * aspect, 25.0f * aspect, -25.0f, 25.0f);
-            GL.LoadMatrix(Matrix4.Transpose(ortho).Matrix);
+            Matrix4 perspective = Matrix4.Perspective(60, aspect, 0.01f, 1000.0f);
+            GL.LoadMatrix(Matrix4.Transpose(perspective).Matrix);
 
             GL.MatrixMode(MatrixMode.Modelview);
             GL.LoadIdentity();
             Matrix4 lookAt = Matrix4.LookAt(new Vector3(10.0f, 5.0f, 15.0f), new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 1.0f, 0.0f));
-            GL.LoadMatrix(Matrix4.Transpose(lookAt).Matrix);
             MatrixStack stack = new MatrixStack();
             stack.Load(lookAt);
             GL.LoadMatrix(stack.OpenGL);
@@ -84,6 +46,7 @@ namespace GameApplication {
         protected void DrawPlanets(float worldX,float worldY, float worldZ,MatrixStack stack) {
             stack.Push();
             {
+                GL.Color3(1.0f, 1.0f, 0.0f);
                 //sun
                 Matrix4 scale = Matrix4.Scale(new Vector3(0.5f, 0.5f, 0.5f));
                 Matrix4 translation = Matrix4.Translate(new Vector3(worldX, worldY, worldZ));
@@ -91,12 +54,14 @@ namespace GameApplication {
                 stack.Mul(model);
                 GL.LoadMatrix(stack.OpenGL);
                 DrawSphere(3);
-                stack.Push(); 
+                stack.Push();
+                GL.LoadMatrix(stack[stack.Count-1]);
                 {
+                    GL.Color3(0.0f, 1.0f, 0.0f);
                     //first planet
                     Matrix4 p1scale = Matrix4.Scale(new Vector3(0.3f, 0.3f, 0.3f));
                     Matrix4 p1rotation = Matrix4.AngleAxis(50.0f, 1.0f, 0.0f, 0.0f);
-                    Matrix4 p1translation = Matrix4.Translate(new Vector3(-0.15f, 0.0f, 0.0f));
+                    Matrix4 p1translation = Matrix4.Translate(new Vector3(-0.55f, 0.5f, 0.0f));
                     Matrix4 planet = p1translation * p1rotation * p1scale;
                     stack.Mul(planet);
                     GL.LoadMatrix(stack.OpenGL);
@@ -104,6 +69,7 @@ namespace GameApplication {
                     stack.Push();
                     {
                         //draw planet1 moon
+                        GL.Color3(1.0f, 0.0f, 0.0f);
                         Matrix4 m1Scale = Matrix4.Scale(new Vector3(-0.2f, 0.05f, 0.0f));
                         Matrix4 m1Rotation = Matrix4.AngleAxis(45.0f, 0.0f, 1.0f, 0.0f);
                         Matrix4 m1Translation = Matrix4.Translate(new Vector3(-0.3f, 0.0f, 0.0f));
