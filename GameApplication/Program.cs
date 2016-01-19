@@ -40,6 +40,7 @@ namespace GameApplication {
             base.OnResize(e);
             Rectangle drawingArea = ClientRectangle;
             //do resize logic here
+            TheGame.Resize(Window.Width, Window.Height);
         }
         public static void ToggleFullscreen() {
             if (IsFullScreen) {
@@ -59,6 +60,7 @@ namespace GameApplication {
             Window = new MainGameWindow();
             Axiis = new Grid();
             TheGame = new GLSolarSystem();
+            TheGame.Resize(Window.Width, Window.Height);
             Window.Load += new EventHandler<EventArgs>(Initialize);
             Window.UpdateFrame += new EventHandler<FrameEventArgs>(Update);
             Window.RenderFrame += new EventHandler<FrameEventArgs>(Render);

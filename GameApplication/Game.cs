@@ -18,5 +18,8 @@ namespace GameApplication {
         public virtual void Shutdown() {
 
         }
+        public virtual void Resize(int width, int height) {
+
+        }
     }
 }

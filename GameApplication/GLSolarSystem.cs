@@ -18,14 +18,6 @@ namespace GameApplication {
             grid = new Grid();
             GL.Enable(EnableCap.DepthTest);
             GL.Viewport(0, 0, MainGameWindow.Window.Width, MainGameWindow.Window.Height);
-            //set projection matrix
-            GL.MatrixMode(MatrixMode.Projection);
-            float aspect = (float)MainGameWindow.Window.Width / (float)MainGameWindow.Window.Height;
-            Matrix4 perspective = Matrix4.Perspective(60, aspect, 0.01f, 1000.0f);
-            GL.LoadMatrix(Matrix4.Transpose(perspective).Matrix);
-            //switch to view matrix
-            GL.MatrixMode(MatrixMode.Modelview);
-            GL.LoadIdentity();
         }
 
         public override void Update(float dTime) {
@@ -37,16 +29,13 @@ namespace GameApplication {
         public override void Render() {
             //set view matrix
             Matrix4 lookAt = Matrix4.LookAt(new Vector3(10.0f, 5.0f, 15.0f), new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 1.0f, 0.0f));
-            MatrixStack stack = new MatrixStack();
-            stack.Load(lookAt);
-            GL.LoadMatrix(stack.OpenGL);
+            GL.LoadMatrix(lookAt.Matrix);
             //render scene
             grid.Render();
-            DrawPlanets(-1.0f, 1.0f, 0.0f, stack);
-            stack.Pop();
+            DrawPlanets(-1.0f, 1.0f, 0.0f);
         }
 
-        protected void DrawPlanets(float worldX, float worldY, float worldZ, MatrixStack stack) {
+        protected void DrawPlanets(float worldX, float worldY, float worldZ) {
             //Draw sun
             GL.Color3(1.0f, 1.0f, 0.0f);
             GL.PushMatrix();
@@ -62,6 +51,16 @@ namespace GameApplication {
                 GL.PopMatrix();
             }
             GL.PopMatrix();
+        }
+        public override void Resize(int width, int height) {
+            //set projection matrix
+            GL.MatrixMode(MatrixMode.Projection);
+            float aspect = (float)MainGameWindow.Window.Width / (float)MainGameWindow.Window.Height;
+            Matrix4 perspective = Matrix4.Perspective(60, aspect, 0.01f, 1000.0f);
+            GL.LoadMatrix(Matrix4.Transpose(perspective).Matrix);
+            //switch to view matrix
+            GL.MatrixMode(MatrixMode.Modelview);
+            GL.LoadIdentity();
         }
     }
 }
