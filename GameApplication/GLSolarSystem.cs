@@ -47,8 +47,16 @@ namespace GameApplication {
                 GL.PushMatrix();
                 {
                     GL.Color3(0.0f, 1.0f, 0.0f);
-                    GL.Rotate(planet1RotSpeed, 1.0f, 1.0f, 0.0f);
+                    GL.Rotate(planet1RotSpeed, 0.0f, 1.0f, 1.0f);
                     GL.Translate(-4.0f, 0.0f, 0.0f);
+                    GL.Scale(0.8f, 0.8f, 0.8f);
+                    Circle.DrawSphere(1);
+                }
+                GL.PushMatrix();
+                {
+                    GL.Color3(1.0f, 0.0f, 0.0f);
+                    GL.Rotate(moon1RotSpeed, 1.0f, 1.0f, 1.0f);
+                    GL.Translate(-2.0f, 0.5f, 0.0f);
                     GL.Scale(0.8f, 0.8f, 0.8f);
                     Circle.DrawSphere(1);
                 }
