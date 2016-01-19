@@ -17,7 +17,7 @@ namespace GameApplication {
         public GLSolarSystem() {
             grid = new Grid();
             GL.Enable(EnableCap.DepthTest);
-            GL.Viewport(0, 0, MainGameWindow.Window.Width, MainGameWindow.Window.Height);
+            Resize(MainGameWindow.Window.Width, MainGameWindow.Window.Height);
         }
 
         public override void Update(float dTime) {
@@ -29,7 +29,7 @@ namespace GameApplication {
         public override void Render() {
             //set view matrix
             Matrix4 lookAt = Matrix4.LookAt(new Vector3(10.0f, 5.0f, 15.0f), new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 1.0f, 0.0f));
-            GL.LoadMatrix(lookAt.Matrix);
+            GL.LoadMatrix(lookAt.OpenGL);
             //render scene
             grid.Render();
             DrawPlanets(-1.0f, 1.0f, 0.0f);
@@ -46,13 +46,18 @@ namespace GameApplication {
                 //Other planets
                 GL.PushMatrix();
                 {
-                    //GL.Scale(0.8f, 0.8f, 0.8f);
+                    GL.Color3(0.0f, 1.0f, 0.0f);
+                    GL.Rotate(planet1RotSpeed, 1.0f, 1.0f, 0.0f);
+                    GL.Translate(-4.0f, 0.0f, 0.0f);
+                    GL.Scale(0.8f, 0.8f, 0.8f);
+                    Circle.DrawSphere(1);
                 }
                 GL.PopMatrix();
             }
             GL.PopMatrix();
         }
         public override void Resize(int width, int height) {
+            GL.Viewport(0, 0, MainGameWindow.Window.Width, MainGameWindow.Window.Height);
             //set projection matrix
             GL.MatrixMode(MatrixMode.Projection);
             float aspect = (float)MainGameWindow.Window.Width / (float)MainGameWindow.Window.Height;
