@@ -20,7 +20,10 @@ namespace GameApplication {
         }
         
         public override void Update(float dTime) {
-            planet1RotSpeed += 50.0f*dTime;
+            planet1RotSpeed += 75*dTime;
+            moon1RotSpeed += 100.0f * dTime;
+            planet2RotSpeed += 50.0f * dTime;
+            moon2RotSpeed += 75.0f * dTime;
         }
         public override void Render() {
             GL.Viewport(0, 0, MainGameWindow.Window.Width, MainGameWindow.Window.Height);
@@ -57,9 +60,9 @@ namespace GameApplication {
                     GL.Color3(0.0f, 1.0f, 0.0f);
                     //first planet
                     Matrix4 p1scale = Matrix4.Scale(new Vector3(0.8f, 0.8f, 0.8f));
-                    Matrix4 p1rotation = Matrix4.AngleAxis(planet1RotSpeed, 1.0f, 1.0f, 1.0f);
+                    Matrix4 p1rotation = Matrix4.AngleAxis(planet1RotSpeed, 0.0f, 1.0f, 1.0f);
                     Matrix4 p1translation = Matrix4.Translate(new Vector3(-2.5f, 0.5f, 0.0f));
-                    Matrix4 planet = p1translation * p1rotation * p1scale;
+                    Matrix4 planet = p1rotation * p1translation * p1scale;
                     stack.Mul(planet);
                     GL.LoadMatrix(stack.OpenGL);
                     Circle.DrawSphere(1);
@@ -68,9 +71,9 @@ namespace GameApplication {
                         //draw planet1 moon
                         GL.Color3(1.0f, 0.0f, 0.0f);
                         Matrix4 m1Scale = Matrix4.Scale(new Vector3(0.5f, 0.5f, 0.5f));
-                        Matrix4 m1Rotation = Matrix4.AngleAxis(45.0f, 0.0f, 1.0f, 0.0f);
+                        Matrix4 m1Rotation = Matrix4.AngleAxis(moon1RotSpeed, 0.0f, 1.0f, 0.0f);
                         Matrix4 m1Translation = Matrix4.Translate(new Vector3(-2.0f, 0.0f, 0.0f));
-                        Matrix4 moon = m1Translation /*m1Rotation*/ * m1Scale;
+                        Matrix4 moon = m1Rotation * m1Translation * m1Scale;
                         stack.Mul(moon);
                         GL.LoadMatrix(stack.OpenGL);
                         Circle.DrawSphere(1);
@@ -83,9 +86,9 @@ namespace GameApplication {
                     //second planet
                     GL.Color3(0.0f, 0.0f, 1.0f);
                     Matrix4 pscale = Matrix4.Scale(new Vector3(0.8f, 0.8f, 0.8f));
-                    Matrix4 protation = Matrix4.AngleAxis(50.0f, 0.0f, 1.0f, 0.0f);
+                    Matrix4 protation = Matrix4.AngleAxis(planet2RotSpeed, 0.0f, 1.0f, 0.0f);
                     Matrix4 ptranslation = Matrix4.Translate(new Vector3(12.0f, 0.5f, 0.0f));
-                    Matrix4 planet = ptranslation * protation * pscale;
+                    Matrix4 planet = protation * ptranslation * pscale;
                     stack.Mul(planet);
                     GL.LoadMatrix(stack.OpenGL);
                     Circle.DrawSphere(1);
@@ -94,9 +97,9 @@ namespace GameApplication {
                         //draw planet1 moon
                         GL.Color3(0.5f, 1.0f, 1.0f);
                         Matrix4 mScale = Matrix4.Scale(new Vector3(0.5f, 0.5f, 0.5f));
-                        Matrix4 mRotation = Matrix4.AngleAxis(45.0f, 1.0f, 0.0f, 0.0f);
+                        Matrix4 mRotation = Matrix4.AngleAxis(moon2RotSpeed, 1.0f, 1.0f, 1.0f);
                         Matrix4 mTranslation = Matrix4.Translate(new Vector3(2.0f, 0.0f, 0.0f));
-                        Matrix4 moon = mTranslation * mRotation * mScale;
+                        Matrix4 moon = mRotation * mTranslation * mScale;
                         stack.Mul(moon);
                         GL.LoadMatrix(stack.OpenGL);
                         Circle.DrawSphere(1);
