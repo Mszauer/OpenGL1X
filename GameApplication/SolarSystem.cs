@@ -9,8 +9,6 @@ using OpenTK.Graphics.OpenGL;
 namespace GameApplication {
     class SolarSystem : Game{
         Grid grid = null;
-        float planetRotDir = 1.0f;
-        float moonRotDir = -1.0f;
         float planet1RotSpeed = 15.0f;
         float planet2RotSpeed = 5.0f;
         float moon1RotSpeed = 3.0f;
@@ -22,7 +20,7 @@ namespace GameApplication {
         }
         
         public override void Update(float dTime) {
-            base.Update(dTime);
+            planet1RotSpeed += 50.0f*dTime;
         }
         public override void Render() {
             GL.Viewport(0, 0, MainGameWindow.Window.Width, MainGameWindow.Window.Height);
@@ -59,7 +57,7 @@ namespace GameApplication {
                     GL.Color3(0.0f, 1.0f, 0.0f);
                     //first planet
                     Matrix4 p1scale = Matrix4.Scale(new Vector3(0.8f, 0.8f, 0.8f));
-                    Matrix4 p1rotation = Matrix4.AngleAxis(50.0f, 1.0f, 0.0f, 0.0f);
+                    Matrix4 p1rotation = Matrix4.AngleAxis(planet1RotSpeed, 1.0f, 1.0f, 1.0f);
                     Matrix4 p1translation = Matrix4.Translate(new Vector3(-2.5f, 0.5f, 0.0f));
                     Matrix4 planet = p1translation * p1rotation * p1scale;
                     stack.Mul(planet);
@@ -79,6 +77,8 @@ namespace GameApplication {
                     }
                     stack.Pop();
                 }//end first planet
+                stack.Pop();
+                stack.Push();
                 {
                     //second planet
                     GL.Color3(0.0f, 0.0f, 1.0f);
