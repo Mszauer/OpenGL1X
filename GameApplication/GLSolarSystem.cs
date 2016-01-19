@@ -43,24 +43,34 @@ namespace GameApplication {
                 GL.Scale(0.5f, 0.5f, 0.5f);
                 GL.Translate(worldX, worldY, worldZ);
                 Circle.DrawSphere(3);
-                //Other planets
+                //planet1
                 GL.PushMatrix();
+                    {
+                        GL.Color3(0.0f, 1.0f, 0.0f);
+                        GL.Rotate(planet1RotSpeed, 0.0f, 1.0f, 1.0f);
+                        GL.Translate(-4.0f, 0.0f, 0.0f);
+                        GL.Scale(0.8f, 0.8f, 0.8f);
+                        Circle.DrawSphere(1);
+                    }
+                    GL.PushMatrix();
+                        {
+                            //moon
+                            GL.Color3(1.0f, 0.0f, 0.0f);
+                            GL.Rotate(moon1RotSpeed, 1.0f, 1.0f, 1.0f);
+                            GL.Translate(-2.0f, 0.5f, 0.0f);
+                            GL.Scale(0.8f, 0.8f, 0.8f);
+                            Circle.DrawSphere(1);
+                        }
+                    GL.PopMatrix();
+                //planet2
                 {
-                    GL.Color3(0.0f, 1.0f, 0.0f);
-                    GL.Rotate(planet1RotSpeed, 0.0f, 1.0f, 1.0f);
-                    GL.Translate(-4.0f, 0.0f, 0.0f);
-                    GL.Scale(0.8f, 0.8f, 0.8f);
+                    GL.Color3(0.0f, 0.0f, 1.0f);
+                    GL.Rotate(planet2RotSpeed, 1.0f, 0.0f, 1.0f);
+                    GL.Translate(3.0f, 0.0f, 0.0f);
+                    GL.Scale(0.5f, 0.5f, 0.5f);
                     Circle.DrawSphere(1);
                 }
-                GL.PushMatrix();
-                {
-                    GL.Color3(1.0f, 0.0f, 0.0f);
-                    GL.Rotate(moon1RotSpeed, 1.0f, 1.0f, 1.0f);
-                    GL.Translate(-2.0f, 0.5f, 0.0f);
-                    GL.Scale(0.8f, 0.8f, 0.8f);
-                    Circle.DrawSphere(1);
-                }
-                GL.PopMatrix();
+
             }
             GL.PopMatrix();
         }
