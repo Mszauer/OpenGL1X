@@ -59,7 +59,7 @@ namespace GameApplication {
             //create new window
             Window = new MainGameWindow();
             Axiis = new Grid();
-            TheGame = new GLSolarSystem();
+            TheGame = new Shaded_triangle();
             TheGame.Resize(Window.Width, Window.Height);
             Window.Load += new EventHandler<EventArgs>(Initialize);
             Window.UpdateFrame += new EventHandler<FrameEventArgs>(Update);
