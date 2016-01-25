@@ -42,6 +42,11 @@ namespace GameApplication {
             GL.Light(LightName.Light2, LightParameter.Diffuse, green);
             GL.Light(LightName.Light2, LightParameter.Specular, white);
 
+           
+        }
+        public override void Render() {
+            base.Render();
+
             Vector3 redPosition = new Vector3();
             redPosition.X = 1.0f * -(float)Math.Sin(redAngle.X * rads) * (float)Math.Cos(redAngle.Y * rads);
             redPosition.Y = 1.0f * -(float)Math.Sin(redAngle.Y * rads);
@@ -77,14 +82,11 @@ namespace GameApplication {
             //re-enable lights
             GL.Enable(EnableCap.Lighting);
         }
-        public override void Render() {
-            base.Render();
-        }
         public override void Resize(int width, int height) {
             base.Resize(width, height);
         }
         public override void Update(float dTime) {
-            //base.Update(dTime);
+            base.Update(dTime);
             redAngle.Y += 15.0f * dTime;
             greenAngle.X += 30.0f * dTime;
         }
