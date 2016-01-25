@@ -59,7 +59,7 @@ namespace GameApplication {
             //create new window
             Window = new MainGameWindow();
             Axiis = new Grid();
-            TheGame = new LightingExample();
+            TheGame = new Directional1();
             TheGame.Resize(Window.Width, Window.Height);
             Window.Load += new EventHandler<EventArgs>(Initialize);
             Window.UpdateFrame += new EventHandler<FrameEventArgs>(Update);

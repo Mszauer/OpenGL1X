@@ -10,6 +10,7 @@ namespace GameApplication {
     class LightingExample : Game{
         Grid grid = null;
         Vector3 cameraAngle = new Vector3(0.0f, -25.0f, 10.0f);
+        protected float rads = (float)(Math.PI / 180.0f);
 
         public override void Initialize() {
             grid = new Grid(true);
@@ -22,7 +23,6 @@ namespace GameApplication {
         }
         public override void Render() {
             Vector3 eyePos = new Vector3();
-            float rads = (float)(Math.PI / 180.0f);
             eyePos.X = cameraAngle.Z * -(float)Math.Sin(cameraAngle.X * rads * (float)Math.Cos(cameraAngle.Y * rads));
             eyePos.Y = cameraAngle.Z * -(float)Math.Sin(cameraAngle.Y * rads);
             eyePos.Z = -cameraAngle.Z * (float)Math.Cos(cameraAngle.X * rads * (float)Math.Cos(cameraAngle.Y * rads));
