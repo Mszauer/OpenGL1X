@@ -10,6 +10,8 @@ namespace GameApplication {
     class Directional1 : LightingExample{
         Vector2 redAngle = null;
         Vector2 greenAngle = null;
+        Vector3 cameraAngle = new Vector3(0.0f, -25.0f, 10.0f);
+
         public override void Initialize() {
             base.Initialize();
 
@@ -45,7 +47,15 @@ namespace GameApplication {
            
         }
         public override void Render() {
-            base.Render();
+            Vector3 eyePos = new Vector3();
+            eyePos.X = cameraAngle.Z * -(float)Math.Sin(cameraAngle.X * rads * (float)Math.Cos(cameraAngle.Y * rads));
+            eyePos.Y = cameraAngle.Z * -(float)Math.Sin(cameraAngle.Y * rads);
+            eyePos.Z = -cameraAngle.Z * (float)Math.Cos(cameraAngle.X * rads * (float)Math.Cos(cameraAngle.Y * rads));
+
+            Matrix4 lookAt = Matrix4.LookAt(eyePos, new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 1.0f, 0.0f));
+            GL.LoadMatrix(Matrix4.Transpose(lookAt).Matrix);
+
+            grid.Render();
 
             Vector3 redPosition = new Vector3();
             redPosition.X = 1.0f * -(float)Math.Sin(redAngle.X * rads) * (float)Math.Cos(redAngle.Y * rads);
@@ -57,8 +67,8 @@ namespace GameApplication {
             greenPosition.Y = 1.0f * -(float)Math.Sin(greenAngle.Y * rads);
             greenPosition.Z = -1.0f * (float)Math.Cos(greenAngle.X * rads) * (float)Math.Cos(greenAngle.Y * rads);
 
-            GL.Light(LightName.Light1, LightParameter.Position, new float[] { redPosition.X, redPosition.Y, redPosition.Z, 0.0f });
-            GL.Light(LightName.Light2, LightParameter.Position, new float[] { greenPosition.X, greenPosition.Y, greenPosition.Z, 0.0f });
+            //GL.Light(LightName.Light1, LightParameter.Position, new float[] { redPosition.X, redPosition.Y, redPosition.Z, 0.0f });
+            //GL.Light(LightName.Light2, LightParameter.Position, new float[] { greenPosition.X, greenPosition.Y, greenPosition.Z, 0.0f });
 
             //add debug visualization
             GL.Disable(EnableCap.Lighting);
@@ -81,6 +91,30 @@ namespace GameApplication {
             GL.PopMatrix();
             //re-enable lights
             GL.Enable(EnableCap.Lighting);
+
+            GL.Color3(0.0f, 1.0f, 0.0f);
+            GL.PushMatrix();
+            {
+                GL.Translate(0.0f, 2.5f, -2.0f);
+                Primitives.Torus();
+            }
+            GL.PopMatrix();
+
+            GL.Color3(1.0f, 0.0f, 0.0f);
+            GL.PushMatrix();
+            {
+                GL.Translate(2.5f, 1.0f, -0.5f);
+                Primitives.DrawSphere();
+            }
+            GL.PopMatrix();
+
+            GL.Color3(0.0f, 0.0f, 1.0f);
+            GL.PushMatrix();
+            {
+                GL.Translate(-1.0f, 0.5f, 0.5f);
+                Primitives.Cube();
+            }
+            GL.PopMatrix();
         }
         public override void Resize(int width, int height) {
             base.Resize(width, height);

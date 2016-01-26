@@ -8,7 +8,7 @@ using Math_Implementation;
 
 namespace GameApplication {
     class LightingExample : Game{
-        Grid grid = null;
+        protected Grid grid = null;
         Vector3 cameraAngle = new Vector3(0.0f, -25.0f, 10.0f);
         protected float rads = (float)(Math.PI / 180.0f);
 
