@@ -14,7 +14,8 @@ namespace GameApplication {
         public override void Initialize() {
             base.Initialize();
 
-            redAngle = greenAngle = new Vector2();
+            redAngle = new Vector2();
+            greenAngle = new Vector2();
 
             GL.Enable(EnableCap.Lighting);
             GL.Enable(EnableCap.Light0);
@@ -47,9 +48,9 @@ namespace GameApplication {
         }
         public override void Render() {
             Vector3 eyePos = new Vector3();
-            eyePos.X = cameraAngle.Z * -(float)Math.Sin(cameraAngle.X * rads * (float)Math.Cos(cameraAngle.Y * rads));
+            eyePos.X = cameraAngle.Z * -(float)Math.Sin(cameraAngle.X * rads) * (float)Math.Cos(cameraAngle.Y * rads);
             eyePos.Y = cameraAngle.Z * -(float)Math.Sin(cameraAngle.Y * rads);
-            eyePos.Z = -cameraAngle.Z * (float)Math.Cos(cameraAngle.X * rads * (float)Math.Cos(cameraAngle.Y * rads));
+            eyePos.Z = -cameraAngle.Z * (float)Math.Cos(cameraAngle.X * rads) * (float)Math.Cos(cameraAngle.Y * rads);
 
             Matrix4 lookAt = Matrix4.LookAt(eyePos, new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 1.0f, 0.0f));
             GL.LoadMatrix(Matrix4.Transpose(lookAt).Matrix);
@@ -66,8 +67,8 @@ namespace GameApplication {
             greenPosition.Y = 1.0f * -(float)Math.Sin(greenAngle.Y * rads);
             greenPosition.Z = -1.0f * (float)Math.Cos(greenAngle.X * rads) * (float)Math.Cos(greenAngle.Y * rads);
 
-            //GL.Light(LightName.Light1, LightParameter.Position, new float[] { redPosition.X, redPosition.Y, redPosition.Z, 0.0f });
-            //GL.Light(LightName.Light2, LightParameter.Position, new float[] { greenPosition.X, greenPosition.Y, greenPosition.Z, 0.0f });
+            GL.Light(LightName.Light1, LightParameter.Position, new float[] { redPosition.X, redPosition.Y, redPosition.Z, 0.0f });
+            GL.Light(LightName.Light2, LightParameter.Position, new float[] { greenPosition.X, greenPosition.Y, greenPosition.Z, 0.0f });
 
             //add debug visualization
             GL.Disable(EnableCap.Lighting);
@@ -84,7 +85,7 @@ namespace GameApplication {
             GL.Color3(0.0f, 1.0f, 0.0f);
             GL.Vertex3(0.0f, 0.0f, 0.0f);
             greenPosition.Normalize();
-            greenPosition *= -1.0f;
+            greenPosition *= -2.0f;
             GL.Vertex3(greenPosition.X, greenPosition.Y, greenPosition.Z);
             GL.End();
             GL.PopMatrix();
@@ -119,7 +120,7 @@ namespace GameApplication {
             base.Resize(width, height);
         }
         public override void Update(float dTime) {
-            base.Update(dTime);
+            //base.Update(dTime);
             redAngle.Y += 15.0f * dTime;
             greenAngle.X += 30.0f * dTime;
         }
