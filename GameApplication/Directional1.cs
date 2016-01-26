@@ -10,7 +10,6 @@ namespace GameApplication {
     class Directional1 : LightingExample{
         Vector2 redAngle = null;
         Vector2 greenAngle = null;
-        Vector3 cameraAngle = new Vector3(0.0f, -25.0f, 10.0f);
 
         public override void Initialize() {
             base.Initialize();
