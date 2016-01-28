@@ -57,6 +57,11 @@ namespace GameApplication {
 
             grid.Render();
 
+            //set light1 to red
+            float[] red = new float[] { 1.0f, 0.0f, 0.0f, 1.0f };
+            GL.Light(LightName.Light1, LightParameter.Diffuse, red);
+            GL.Light(LightName.Light1, LightParameter.Ambient, red);
+
             Vector3 redPosition = new Vector3();
             redPosition.X = 1.0f * -(float)Math.Sin(redAngle.X * rads) * (float)Math.Cos(redAngle.Y * rads);
             redPosition.Y = 1.0f * -(float)Math.Sin(redAngle.Y * rads);
@@ -117,7 +122,19 @@ namespace GameApplication {
                 Primitives.DrawSphere();
             }
             GL.PopMatrix();
-            //
+            //disable green and red lights
+            GL.Disable(EnableCap.Light2);
+            GL.Disable(EnableCap.Light1);
+            //enable blue light
+            GL.Enable(EnableCap.Light0);
+
+            //change color of light 1 to pruple from red
+            float[] purple = new float[] { 1.0f, 0.0f, 1.0f, 1.0f };
+            GL.Light(LightName.Light1, LightParameter.Diffuse, purple);
+            GL.Light(LightName.Light1, LightParameter.Ambient, purple);
+            //specular can stay white
+            //update position of light1 to static
+            GL.Light(LightName.Light1, LightParameter.Position, new float[] { 0.0f, -0.5f, -0.5f, 0.0f });
             //draw cube
             GL.Color3(0.0f, 0.0f, 1.0f);
             GL.PushMatrix();
