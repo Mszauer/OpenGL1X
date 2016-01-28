@@ -124,11 +124,12 @@ namespace GameApplication {
             GL.PopMatrix();
             //disable green and red lights
             GL.Disable(EnableCap.Light2);
-            GL.Disable(EnableCap.Light1);
             //enable blue light
+            GL.Enable(EnableCap.Light1);
+
             GL.Enable(EnableCap.Light0);
 
-            //change color of light 1 to pruple from red
+            //change color of light 1 to purple from red
             float[] purple = new float[] { 1.0f, 0.0f, 1.0f, 1.0f };
             GL.Light(LightName.Light1, LightParameter.Diffuse, purple);
             GL.Light(LightName.Light1, LightParameter.Ambient, purple);
@@ -148,7 +149,7 @@ namespace GameApplication {
             base.Resize(width, height);
         }
         public override void Update(float dTime) {
-            //base.Update(dTime);
+            base.Update(dTime);
             redAngle.Y += 15.0f * dTime;
             greenAngle.X += 30.0f * dTime;
         }
