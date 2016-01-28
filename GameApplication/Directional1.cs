@@ -22,7 +22,7 @@ namespace GameApplication {
             GL.Enable(EnableCap.Light1);
             GL.Enable(EnableCap.Light2);
 
-            float[] white = new float[] { 0f, 0f, 0f, 1f };
+            float[] white = new float[] { 1f, 1f, 1f, 1f };
             float[] blue = new float[] { 0f, 0f, 1f, 1f };
             float[] red = new float[] { 1.0f, 0.0f, 0.0f, 1.0f };
             float[] green = new float[] { 0.0f, 1.0f, 0.0f, 1.0f };
