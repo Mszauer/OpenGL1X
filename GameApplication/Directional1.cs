@@ -92,6 +92,11 @@ namespace GameApplication {
             //re-enable lights
             GL.Enable(EnableCap.Lighting);
 
+            GL.Disable(EnableCap.Light0);
+            GL.Disable(EnableCap.Light2);
+            //enable red light
+            GL.Enable(EnableCap.Light1);
+            //draw torus
             GL.Color3(0.0f, 1.0f, 0.0f);
             GL.PushMatrix();
             {
@@ -99,7 +104,12 @@ namespace GameApplication {
                 Primitives.Torus();
             }
             GL.PopMatrix();
+            //only red light is enabled, disable it
+            GL.Disable(EnableCap.Light1);
 
+            //enable green light
+            GL.Enable(EnableCap.Light2);
+            //draw sphere
             GL.Color3(1.0f, 0.0f, 0.0f);
             GL.PushMatrix();
             {
@@ -107,7 +117,8 @@ namespace GameApplication {
                 Primitives.DrawSphere();
             }
             GL.PopMatrix();
-
+            //
+            //draw cube
             GL.Color3(0.0f, 0.0f, 1.0f);
             GL.PushMatrix();
             {
