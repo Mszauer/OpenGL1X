@@ -7,9 +7,10 @@ using OpenTK.Graphics.OpenGL;
 using Math_Implementation;
 
 namespace GameApplication {
-    class PointLight : LightingExample{
+    class PointAttenuation : LightingExample {
         Vector2 redAngle = null;
         Vector2 greenAngle = null;
+        float lightAngle = 0.0f;
 
         public override void Initialize() {
             base.Initialize();
@@ -17,16 +18,31 @@ namespace GameApplication {
             greenAngle = new Vector2();
             //enable lighting
             GL.Enable(EnableCap.Lighting);
+            //enable each light
             GL.Enable(EnableCap.Light0);
-            //set light color to yellow
+            GL.Enable(EnableCap.Light1);
+            //Light0 initialize
             float[] yellow = new float[] { 1.0f, 1.0f, 0.0f, 1.0f };
             GL.Light(LightName.Light0, LightParameter.Ambient, new float[] { 1.0f, 1.0f, 1.0f, 1.0f });
             GL.Light(LightName.Light0, LightParameter.Diffuse, yellow);
             GL.Light(LightName.Light0, LightParameter.Specular, yellow);
-            
+            GL.Light(LightName.Light0, LightParameter.ConstantAttenuation, 0.25f);
+            GL.Light(LightName.Light0, LightParameter.LinearAttenuation, 0.25f);
+            GL.Light(LightName.Light0, LightParameter.QuadraticAttenuation, 0.0f);
+            //light1 initialize
+            float[] red = new float[] { 1.0f, 0.0f, 0.0f, 1.0f };
+            GL.Light(LightName.Light1, LightParameter.Ambient, red);
+            GL.Light(LightName.Light1, LightParameter.Diffuse, red);
+            GL.Light(LightName.Light1, LightParameter.Specular, red);
+            GL.Light(LightName.Light1, LightParameter.ConstantAttenuation, 1.0f);
+            GL.Light(LightName.Light1, LightParameter.LinearAttenuation, 0.0f);
+            GL.Light(LightName.Light1, LightParameter.QuadraticAttenuation, 0.0f);
+
         }
         public override void Update(float dTime) {
             base.Update(dTime);
+            cameraAngle.X += 30.0f * dTime;
+            lightAngle += 90.0f * dTime;
         }
         public override void Render() {
             Vector3 eyePos = new Vector3();
@@ -84,13 +100,36 @@ namespace GameApplication {
             }
             GL.PopMatrix();
 
+            GL.Enable(EnableCap.Light1);
             GL.Color3(1.0f, 0.0f, 0.0f);
             GL.PushMatrix();
             {
                 GL.Translate(2.5f, 1.0f, -0.5f);
-                Primitives.DrawSphere();
+                //move light into place
+                GL.PushMatrix();
+                {
+                    GL.Rotate(lightAngle, 0.0f, 1.0f, 0.0f);
+                    GL.Translate(-2.0f, 0.0f, -2.0f);
+                    //render light where model-view matrix is
+                    position = new float[] { 0.0f, 0.0f, 0.0f, 1.0f };
+                    GL.Light(LightName.Light1, LightParameter.Position, position);
+                    //disable lighting
+                    GL.Disable(EnableCap.Light1);
+                    //make light smaller
+                    GL.Scale(0.25f, 0.25f, 0.25f);
+                    //and blue
+                    GL.Color3(0.0f, 0.0f, 1.0f);
+                    //draw light visualization
+                    Primitives.DrawSphere();
+                    //re-enable lighting
+                    GL.Enable(EnableCap.Light1);
+                }
+                //get rid of light matrix
+                GL.PopMatrix();
+                Primitives.DrawSphere(5);
             }
             GL.PopMatrix();
+            GL.Disable(EnableCap.Light1);
 
             GL.Color3(0.0f, 0.0f, 1.0f);
             GL.PushMatrix();

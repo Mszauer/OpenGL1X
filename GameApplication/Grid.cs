@@ -16,20 +16,15 @@ namespace GameApplication {
         public Grid(bool solid) {
             RenderSolid = true;
         }
-        public void Render() {
+        public void Render(int subdiv = 0) {
             // Draw grid
             if (RenderSolid) {
                 GL.Color3(0.4f, 0.4f, 0.4f);
                 GL.Begin(PrimitiveType.Triangles);
                 {
                     GL.Normal3(0.0f, 1.0f, 0.0f);
-                    GL.Vertex3(10.0f, -0.01f, 10.0f);
-                    GL.Vertex3(10.0f, -0.01f, -10.0f);
-                    GL.Vertex3(-10.0f, -0.01f, -10.0f);
+                    SubdivideQuad(-10, 10, -10, 10, -0.01f, 0, subdiv);
 
-                    GL.Vertex3(10.0f, -0.01f, 10.0f);
-                    GL.Vertex3(-10.0f, -0.01f, -10.0f);
-                    GL.Vertex3(-10.0f, -0.01f, 10.0f);
                 }
                 GL.End();
             }
@@ -67,6 +62,26 @@ namespace GameApplication {
             GL.Vertex3(0.0f, 0.0f, 0.0f);
             GL.Vertex3(0.0f, 0.0f, 1.0f);
             GL.End();
+        }
+        private static void SubdivideQuad(float l, float r, float t, float b, float y, int subdivLevel, int target) {
+            if (subdivLevel >= target) {
+                GL.Vertex3(l, y, t);
+                GL.Vertex3(l, y, b);
+                GL.Vertex3(r, y, b);
+
+                GL.Vertex3(l, y, t);
+                GL.Vertex3(r, y, b);
+                GL.Vertex3(r, y, t);
+            }
+            else {
+                float half_width = Math.Abs(r - l) * 0.5f;
+                float half_height = Math.Abs(b - t) * 0.5f;
+
+                SubdivideQuad(l, l + half_width, t, t + half_height, y, subdivLevel + 1, target);
+                SubdivideQuad(l + half_width, r, t, t + half_height, y, subdivLevel + 1, target);
+                SubdivideQuad(l, l + half_width, t + half_height, b, y, subdivLevel + 1, target);
+                SubdivideQuad(l + half_width, r, t + half_height, b, y, subdivLevel + 1, target);
+            }
         }
     }
 }

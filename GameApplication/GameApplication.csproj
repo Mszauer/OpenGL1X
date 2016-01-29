@@ -71,6 +71,7 @@
     <Compile Include="Math\Vector4.cs" />
     <Compile Include="MatrixDemo.cs" />
     <Compile Include="MrRoboto.cs" />
+    <Compile Include="PointAttenuation.cs" />
     <Compile Include="PointLight.cs" />
     <Compile Include="Polygons.cs" />
     <Compile Include="Primitives.cs" />
