@@ -81,6 +81,7 @@
     <Compile Include="ScaleSample.cs" />
     <Compile Include="Shaded triangle.cs" />
     <Compile Include="SolarSystem.cs" />
+    <Compile Include="SpotLight.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
