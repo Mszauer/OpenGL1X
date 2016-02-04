@@ -61,6 +61,7 @@
     <Compile Include="LightingExample.cs" />
     <Compile Include="LinesSample.cs" />
     <Compile Include="LookAtSample.cs" />
+    <Compile Include="MaterialColors.cs" />
     <Compile Include="MaterialTest.cs" />
     <Compile Include="Math\Matrix2.cs" />
     <Compile Include="Math\Matrix3.cs" />
