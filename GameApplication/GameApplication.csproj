@@ -62,6 +62,7 @@
     <Compile Include="LinesSample.cs" />
     <Compile Include="LookAtSample.cs" />
     <Compile Include="MaterialColors.cs" />
+    <Compile Include="MaterialColorTracker.cs" />
     <Compile Include="MaterialSpecular.cs" />
     <Compile Include="MaterialTest.cs" />
     <Compile Include="Math\Matrix2.cs" />
