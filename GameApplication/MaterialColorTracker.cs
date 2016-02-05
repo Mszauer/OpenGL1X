@@ -13,8 +13,7 @@ namespace GameApplication {
             GL.Enable(EnableCap.Lighting);
             GL.Enable(EnableCap.ColorMaterial);
             GL.Enable(EnableCap.Light0);
-            GL.ColorMaterial(MaterialFace.FrontAndBack, ColorMaterialParameter.Ambient);
-            GL.ColorMaterial(MaterialFace.FrontAndBack, ColorMaterialParameter.Diffuse);
+            GL.ColorMaterial(MaterialFace.FrontAndBack, ColorMaterialParameter.AmbientAndDiffuse);
 
             float[] lightPosition = new float[] { 0f, 1f, 1f };
             GL.Light(LightName.Light0, LightParameter.Position, lightPosition);
@@ -43,7 +42,7 @@ namespace GameApplication {
             }
             GL.PopMatrix();
 
-            GL.Color3(0.0f, 0.0f, 1.0f);
+            GL.Color3(0.0f, 1.0f, 0.0f);
             GL.PushMatrix();
             {
                 GL.Translate(3.0f, 1.0f, 0.5f);
@@ -52,7 +51,7 @@ namespace GameApplication {
             }
             GL.PopMatrix();
 
-            GL.Color3(0.0f, 0.0f, 1.0f);
+            GL.Color3(1.0f, 0.0f, 1.0f);
             GL.PushMatrix();
             {
                 GL.Translate(-3.0f, 1.0f, 0.5f);
