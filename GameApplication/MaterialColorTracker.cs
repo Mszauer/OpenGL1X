@@ -18,8 +18,8 @@ namespace GameApplication {
             float[] red = new float[] { 1f, 0f, 0f, 1f };
             float[] blue = new float[] { 0f, 0f, 1f, 1f };
             float[] white = new float[] { 1f, 1f, 1f, 1f };
-            GL.Light(LightName.Light0, LightParameter.Ambient, red);
-            GL.Light(LightName.Light0, LightParameter.Diffuse, blue);
+            GL.Light(LightName.Light0, LightParameter.Ambient, new float[] { 0.2f, 0.2f, 0.2f, 1.0f });
+            GL.Light(LightName.Light0, LightParameter.Diffuse, new float[] { 0.8f, 0.8f, 0.8f, 1.0f });
             GL.Light(LightName.Light0, LightParameter.Specular, white);
 
             GL.Material(MaterialFace.FrontAndBack, MaterialParameter.Specular, new float[] { 1, 1, 1, 1 });
