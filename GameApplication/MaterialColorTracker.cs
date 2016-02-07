@@ -13,7 +13,7 @@ namespace GameApplication {
             GL.Enable(EnableCap.Lighting);
             GL.Enable(EnableCap.Light0);
 
-            float[] lightPosition = new float[] { 0f, 1f, 1f };
+            float[] lightPosition = new float[] { 0f, 1f, 1f, 0f };
             GL.Light(LightName.Light0, LightParameter.Position, lightPosition);
             float[] red = new float[] { 1f, 0f, 0f, 1f };
             float[] blue = new float[] { 0f, 0f, 1f, 1f };
@@ -40,7 +40,6 @@ namespace GameApplication {
             GL.PushMatrix();
             {
                 GL.Translate(0.0f, 1.0f, 0.5f);
-                GL.Material(MaterialFace.FrontAndBack, MaterialParameter.Specular, new float[] { 0.0f, 1.0f, 0.0f, 1.0f });
                 Primitives.DrawSphere(3);
             }
             GL.PopMatrix();
@@ -49,7 +48,6 @@ namespace GameApplication {
             GL.PushMatrix();
             {
                 GL.Translate(3.0f, 1.0f, 0.5f);
-                GL.Material(MaterialFace.FrontAndBack, MaterialParameter.Specular, new float[] { 1.0f, 1.0f, 1.0f, 1.0f });
                 Primitives.DrawSphere(3);
             }
             GL.PopMatrix();
@@ -58,7 +56,6 @@ namespace GameApplication {
             GL.PushMatrix();
             {
                 GL.Translate(-3.0f, 1.0f, 0.5f);
-                GL.Material(MaterialFace.FrontAndBack, MaterialParameter.Specular, new float[] { 1.0f, 1.0f, 0.0f, 1.0f });
                 Primitives.DrawSphere(3);
             }
             GL.PopMatrix();
