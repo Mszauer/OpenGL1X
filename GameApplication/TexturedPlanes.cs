@@ -21,8 +21,9 @@ namespace GameApplication {
             GL.Enable(EnableCap.Texture2D);
 
             crazyTexture = GL.GenTexture();
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMagFilter.Nearest);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
+            GL.BindTexture(TextureTarget.Texture2D, crazyTexture);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMagFilter.Linear);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
             //load bmp texture
             Bitmap bmp = new Bitmap("Assets/crazy_taxi.png");
             //get the data about bmp
@@ -35,6 +36,7 @@ namespace GameApplication {
 
         }
         public override void Shutdown() {
+            GL.BindTexture(TextureTarget.Texture2D, 0);
             GL.DeleteTexture(crazyTexture);
             crazyTexture = -1;
             base.Shutdown();
