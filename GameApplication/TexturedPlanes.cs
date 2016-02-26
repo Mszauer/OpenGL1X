@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using OpenTK.Graphics.OpenGL;
 using Math_Implementation;
+using System.Drawing;
 using System.Drawing.Imaging;
 
 namespace GameApplication {
@@ -22,6 +23,17 @@ namespace GameApplication {
             crazyTexture = GL.GenTexture();
             GL.BindTexture(TextureTarget.Texture2D, crazyTexture);
             //GL.BindTexture(TextureTarget.Texture2D, 0);
+            //load bmp texture
+            Bitmap bmp = new Bitmap("Assets/crazy_taxi.png");
+            //get the data about bmp
+            BitmapData bmp_data = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+            //upload data to gpu
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, bmp_data.Width, bmp_data.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, bmp_data.Scan0);
+            //mark cpu memory for disposal
+            bmp.UnlockBits(bmp_data);
+            bmp.Dispose();
+            // height and width
+
         }
         public override void Shutdown() {
             base.Shutdown();
