@@ -21,8 +21,8 @@ namespace GameApplication {
             GL.Enable(EnableCap.Texture2D);
 
             crazyTexture = GL.GenTexture();
-            GL.BindTexture(TextureTarget.Texture2D, crazyTexture);
-            //GL.BindTexture(TextureTarget.Texture2D, 0);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMagFilter.Nearest);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
             //load bmp texture
             Bitmap bmp = new Bitmap("Assets/crazy_taxi.png");
             //get the data about bmp
@@ -32,10 +32,11 @@ namespace GameApplication {
             //mark cpu memory for disposal
             bmp.UnlockBits(bmp_data);
             bmp.Dispose();
-            // height and width
 
         }
         public override void Shutdown() {
+            GL.DeleteTexture(crazyTexture);
+            crazyTexture = -1;
             base.Shutdown();
         }
         public override void Render() {
@@ -48,16 +49,26 @@ namespace GameApplication {
             GL.Enable(EnableCap.DepthTest);
             GL.Enable(EnableCap.Texture2D);
 
+            GL.BindTexture(TextureTarget.Texture2D, crazyTexture);
+
             GL.Color3(1f, 1f, 1f);//white
             GL.Begin(PrimitiveType.Triangles);
+                GL.TexCoord2(1, 0);
                 GL.Vertex3(1, 4, 2);//top right
+                GL.TexCoord2(0,0);
                 GL.Vertex3(1, 4, -2);//top left
+                GL.TexCoord2(0, 1);
                 GL.Vertex3(1, 0, -2);//bottom left
 
+                GL.TexCoord2(1, 0);
                 GL.Vertex3(1, 4, 2);//top right
+                GL.TexCoord2(0, 1);
                 GL.Vertex3(1, 0, -2);//bottom left
+                GL.TexCoord2(1, 1);
                 GL.Vertex3(1, 0, 2);//bottom Right
             GL.End();
+
+            GL.BindTexture(TextureTarget.Texture2D, 0);
         }
         public override void Resize(int width, int height) {
             GL.Viewport(0, 0, width, height);
