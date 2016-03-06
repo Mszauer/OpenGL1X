@@ -52,7 +52,8 @@ namespace GameApplication {
             GL.Enable(EnableCap.Texture2D);
 
             GL.BindTexture(TextureTarget.Texture2D, crazyTexture);
-
+            float[] white = new float[] { 1.0f, 1.0f, 1.0f };
+            DrawTexture(crazyTexture,white,4,0,-2,2,)
             GL.Color3(1f, 1f, 1f);//white
             GL.Begin(PrimitiveType.Triangles);
                 GL.TexCoord2(1, 0);
@@ -79,6 +80,24 @@ namespace GameApplication {
             Matrix4 perspective = Matrix4.Perspective(60.0f, aspect, 0.01f, 1000.0f);
             GL.LoadMatrix(Matrix4.Transpose(perspective).Matrix);
             GL.MatrixMode(MatrixMode.Modelview);
+        }
+        public void DrawTexture(int texID,float[] color, int top,int bottom, int left, int right, Rectangle screnRect,Rectangle source, Size sourceImage) {
+            GL.BindTexture(TextureTarget.Texture2D, crazyTexture);
+            GL.Color3(color[0], color[1], color[2]);
+            GL.Begin(PrimitiveType.Triangles);
+                GL.TexCoord2(1, 0);//top right
+                GL.Vertex3(1, top, right);
+                GL.TexCoord2(0, 0);//top left
+                GL.Vertex3(1, top, left);
+                GL.TexCoord2(0, 1);//bottom left
+                GL.Vertex3(1, bottom, left);
+                GL.TexCoord2(1, 0);//topRight
+                GL.Vertex3(1, top, right);
+                GL.TexCoord2(0, 1);//bottomLeft
+                GL.Vertex3(1, bottom, left);
+                GL.TexCoord2(0, 0);//bottomRight
+                GL.Vertex3(1, bottom, right);
+            GL.End();
         }
     }
 }
