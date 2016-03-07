@@ -12,6 +12,7 @@ namespace GameApplication {
     class TexturedPlanes : Game {
         protected Grid grid = null;
         int crazyTexture = 0;
+        int houseTexture = 0;
         public override void Initialize() {
             base.Initialize();
             base.Initialize();
@@ -24,21 +25,36 @@ namespace GameApplication {
             GL.BindTexture(TextureTarget.Texture2D, crazyTexture);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMagFilter.Linear);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
-            //load bmp texture
-            Bitmap bmp = new Bitmap("Assets/crazy_taxi.png");
-            //get the data about bmp
-            BitmapData bmp_data = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-            //upload data to gpu
-            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, bmp_data.Width, bmp_data.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, bmp_data.Scan0);
-            //mark cpu memory for disposal
-            bmp.UnlockBits(bmp_data);
-            bmp.Dispose();
+            {
+                //load bmp texture
+                Bitmap bmp = new Bitmap("Assets/crazy_taxi.png");
+                //get the data about bmp
+                BitmapData bmp_data = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+                //upload data to gpu
+                GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, bmp_data.Width, bmp_data.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, bmp_data.Scan0);
+                //mark cpu memory for disposal
+                bmp.UnlockBits(bmp_data);
+                bmp.Dispose();
+            }
 
+            houseTexture = GL.GenTexture();
+            GL.BindTexture(TextureTarget.Texture2D, houseTexture);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMagFilter.Linear);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
+            {
+                Bitmap bmp = new Bitmap("Assets/houses.png");
+                BitmapData bmp_data = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+                GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, bmp_data.Width, bmp_data.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, bmp_data.Scan0);
+                bmp.UnlockBits(bmp_data);
+                bmp.Dispose();
+            }
         }
         public override void Shutdown() {
             GL.BindTexture(TextureTarget.Texture2D, 0);
             GL.DeleteTexture(crazyTexture);
+            GL.DeleteTexture(houseTexture);
             crazyTexture = -1;
+            houseTexture = -1;
             base.Shutdown();
         }
         public override void Render() {
@@ -52,6 +68,7 @@ namespace GameApplication {
             GL.Enable(EnableCap.Texture2D);
 
             GL.Color3(1f, 1f, 1f);//white
+            GL.BindTexture(TextureTarget.Texture2D, crazyTexture);
             GL.Begin(PrimitiveType.Triangles);
                 GL.TexCoord2(1, 0);
                 GL.Vertex3(1, 4, 2);//top right
@@ -68,6 +85,42 @@ namespace GameApplication {
                 GL.Vertex3(1, 0, 2);//bottom Right
             GL.End();
 
+            //house 1
+            GL.Color3(1f, 1f, 1f);
+            GL.PushMatrix();
+                GL.Translate(-1f, 0.5f, -1f);
+                GL.Rotate(-130f, 0f, 1f, 0f);
+                GL.Scale(0.57f, 1f, 1f);
+                GL.Scale(3f, 3f, 3f);
+                GL.Begin(PrimitiveType.Triangles);
+                GL.TexCoord2()
+                GL.Vertex3(0.5f, 0.5f, 0f);//top right
+                GL.Vertex3(-0.5f, 0.5f, 0f);//top left
+                GL.Vertex3(-0.5f, -0.5f, 0f);//bottom left
+
+                GL.Vertex3(0.5, 0.5, 0);//top right
+                GL.Vertex3(-0.5, -0.5, 0);//bottom left
+                GL.Vertex3(0.5, -0.5, 0);//bottom right
+                GL.End();
+            GL.PopMatrix();
+            // house 2
+            GL.Color3(1f, 1f, 1f);
+            GL.PushMatrix();
+                GL.Translate(-2f, 0.5f, -3f);
+                GL.Rotate(-130f, 0f, 1f, 0f);
+                GL.Scale(0.53f, 1f, 1f);
+                GL.Scale(3f, 3f, 3f);
+                GL.Begin(PrimitiveType.Triangles);
+                GL.Vertex3(0.5, 0.5, 0);//top right
+                GL.Vertex3(-0.5, 0.5, 0);//top left
+                GL.Vertex3(-0.5, -0.5, 0);//bottom left
+
+                GL.Vertex3(0.5, 0.5, 0);//top right
+                GL.Vertex3(-0.5, -0.5, 0);//bottom left
+                GL.Vertex3(0.5, -0.5, 0);//bottom Right
+                GL.End();
+            GL.PopMatrix();
+            
             GL.BindTexture(TextureTarget.Texture2D, 0);
         }
         public override void Resize(int width, int height) {
