@@ -51,9 +51,6 @@ namespace GameApplication {
             GL.Enable(EnableCap.DepthTest);
             GL.Enable(EnableCap.Texture2D);
 
-            GL.BindTexture(TextureTarget.Texture2D, crazyTexture);
-            float[] white = new float[] { 1.0f, 1.0f, 1.0f };
-            DrawTexture(crazyTexture,white,4,0,-2,2,)
             GL.Color3(1f, 1f, 1f);//white
             GL.Begin(PrimitiveType.Triangles);
                 GL.TexCoord2(1, 0);
@@ -81,22 +78,41 @@ namespace GameApplication {
             GL.LoadMatrix(Matrix4.Transpose(perspective).Matrix);
             GL.MatrixMode(MatrixMode.Modelview);
         }
-        public void DrawTexture(int texID,float[] color, int top,int bottom, int left, int right, Rectangle screnRect,Rectangle source, Size sourceImage) {
-            GL.BindTexture(TextureTarget.Texture2D, crazyTexture);
-            GL.Color3(color[0], color[1], color[2]);
+        public void DrawTexture(int texID, Rectangle screenRect, Rectangle source, Size sourceImage) {
+            GL.BindTexture(TextureTarget.Texture2D, texID);
+            GL.Color3(1f, 1f, 1f);
+
+            float top = screenRect.Y;
+            float left = screenRect.X;
+            float bottom = screenRect.Y + screenRect.Height;
+            float right = screenRect.X + screenRect.Width;
+
+            float uv_top = (float)source.Y / (float)sourceImage.Height;
+            float uv_left = (float)source.X / (float)sourceImage.Width;
+            float uv_bottom = (float)(source.Y + source.Height) / (float)sourceImage.Height;
+            float uv_right = (float)(source.X + source.Width) / (float)sourceImage.Width;
+
+
             GL.Begin(PrimitiveType.Triangles);
-                GL.TexCoord2(1, 0);//top right
-                GL.Vertex3(1, top, right);
-                GL.TexCoord2(0, 0);//top left
-                GL.Vertex3(1, top, left);
-                GL.TexCoord2(0, 1);//bottom left
-                GL.Vertex3(1, bottom, left);
-                GL.TexCoord2(1, 0);//topRight
-                GL.Vertex3(1, top, right);
-                GL.TexCoord2(0, 1);//bottomLeft
-                GL.Vertex3(1, bottom, left);
-                GL.TexCoord2(0, 0);//bottomRight
-                GL.Vertex3(1, bottom, right);
+
+            GL.TexCoord2(uv_right, uv_top);//top right
+            GL.Vertex3(right, top, 0);
+
+            GL.TexCoord2(uv_left, uv_top);//top left
+            GL.Vertex3(left, top, 0);
+
+            GL.TexCoord2(uv_left, uv_bottom);//bottom left
+            GL.Vertex3(left, bottom, 0);
+
+            GL.TexCoord2(uv_right, uv_top);//topRight
+            GL.Vertex3(right, top, 0);
+
+            GL.TexCoord2(uv_left, uv_bottom);//bottomLeft
+            GL.Vertex3(left, bottom, 0);
+
+            GL.TexCoord2(uv_right, uv_bottom);//bottomRight
+            GL.Vertex3(right, bottom, 0);
+
             GL.End();
         }
     }
