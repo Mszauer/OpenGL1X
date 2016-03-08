@@ -13,6 +13,14 @@ namespace GameApplication {
         protected Grid grid = null;
         int crazyTexture = 0;
         int houseTexture = 0;
+        float house1_uv_top = 0f;
+        float house1_uv_bottom = 0f;
+        float house1_uv_left = 0f;
+        float house1_uv_right = 0f;
+        float house2_uv_top = 0f;
+        float house2_uv_bottom = 0f;
+        float house2_uv_left = 0f;
+        float house2_uv_right = 0f;
         public override void Initialize() {
             base.Initialize();
             base.Initialize();
@@ -20,6 +28,9 @@ namespace GameApplication {
             GL.Enable(EnableCap.DepthTest);
             GL.Enable(EnableCap.CullFace);
             GL.Enable(EnableCap.Texture2D);
+            GL.Enable(EnableCap.Blend);
+
+            GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 
             crazyTexture = GL.GenTexture();
             GL.BindTexture(TextureTarget.Texture2D, crazyTexture);
@@ -44,6 +55,13 @@ namespace GameApplication {
             {
                 Bitmap bmp = new Bitmap("Assets/houses.png");
                 BitmapData bmp_data = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+                house1_uv_bottom = 326.0f/(float)bmp.Height;
+                house1_uv_right = 186.0f / (float)bmp.Width;
+
+                house2_uv_left = 332.0f / (float)bmp.Width;
+                house2_uv_right = (332.0f + 180.0f) / (float)bmp.Width;
+                house2_uv_bottom = 336.0f / (float)bmp.Height;
+
                 GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, bmp_data.Width, bmp_data.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, bmp_data.Scan0);
                 bmp.UnlockBits(bmp_data);
                 bmp.Dispose();
@@ -84,7 +102,9 @@ namespace GameApplication {
                 GL.TexCoord2(1, 1);
                 GL.Vertex3(1, 0, 2);//bottom Right
             GL.End();
+            GL.BindTexture(TextureTarget.Texture2D, 0);
 
+            GL.BindTexture(TextureTarget.Texture2D, houseTexture);
             //house 1
             GL.Color3(1f, 1f, 1f);
             GL.PushMatrix();
@@ -93,13 +113,18 @@ namespace GameApplication {
                 GL.Scale(0.57f, 1f, 1f);
                 GL.Scale(3f, 3f, 3f);
                 GL.Begin(PrimitiveType.Triangles);
-                GL.TexCoord2()
-                GL.Vertex3(0.5f, 0.5f, 0f);//top right
-                GL.Vertex3(-0.5f, 0.5f, 0f);//top left
-                GL.Vertex3(-0.5f, -0.5f, 0f);//bottom left
 
+            GL.TexCoord2(house1_uv_right, house1_uv_top);
+                GL.Vertex3(0.5f, 0.5f, 0f);//top right
+            GL.TexCoord2(house1_uv_left, house1_uv_top);
+                GL.Vertex3(-0.5f, 0.5f, 0f);//top left
+            GL.TexCoord2(house1_uv_left, house1_uv_bottom);
+                GL.Vertex3(-0.5f, -0.5f, 0f);//bottom left
+            GL.TexCoord2(house1_uv_right, house1_uv_top);
                 GL.Vertex3(0.5, 0.5, 0);//top right
+            GL.TexCoord2(house1_uv_left, house1_uv_bottom);
                 GL.Vertex3(-0.5, -0.5, 0);//bottom left
+            GL.TexCoord2(house1_uv_right, house1_uv_bottom);
                 GL.Vertex3(0.5, -0.5, 0);//bottom right
                 GL.End();
             GL.PopMatrix();
@@ -111,12 +136,17 @@ namespace GameApplication {
                 GL.Scale(0.53f, 1f, 1f);
                 GL.Scale(3f, 3f, 3f);
                 GL.Begin(PrimitiveType.Triangles);
+            GL.TexCoord2(house2_uv_right, house2_uv_top);
                 GL.Vertex3(0.5, 0.5, 0);//top right
+            GL.TexCoord2(house2_uv_left, house2_uv_top);
                 GL.Vertex3(-0.5, 0.5, 0);//top left
+            GL.TexCoord2(house2_uv_left, house2_uv_bottom);
                 GL.Vertex3(-0.5, -0.5, 0);//bottom left
-
+            GL.TexCoord2(house2_uv_right, house2_uv_top);
                 GL.Vertex3(0.5, 0.5, 0);//top right
+            GL.TexCoord2(house2_uv_left, house2_uv_bottom);
                 GL.Vertex3(-0.5, -0.5, 0);//bottom left
+            GL.TexCoord2(house2_uv_right, house2_uv_bottom);
                 GL.Vertex3(0.5, -0.5, 0);//bottom Right
                 GL.End();
             GL.PopMatrix();
