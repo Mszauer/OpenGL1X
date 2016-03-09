@@ -13,6 +13,7 @@ namespace GameApplication {
         protected Grid grid = null;
         int crazyTexture = 0;
         int houseTexture = 0;
+        int uiTexture = 0;
         float house1_uv_top = 0f;
         float house1_uv_bottom = 0f;
         float house1_uv_left = 0f;
@@ -66,92 +67,47 @@ namespace GameApplication {
                 bmp.UnlockBits(bmp_data);
                 bmp.Dispose();
             }
+            uiTexture = GL.GenTexture();
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMagFilter.Linear);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
+            //set parameters like above
+            //create uv ints
         }
         public override void Shutdown() {
             GL.BindTexture(TextureTarget.Texture2D, 0);
             GL.DeleteTexture(crazyTexture);
             GL.DeleteTexture(houseTexture);
+            GL.DeleteTexture(uiTexture);
             crazyTexture = -1;
             houseTexture = -1;
+            uiTexture = -1;
             base.Shutdown();
         }
         public override void Render() {
             Matrix4 lookAt = Matrix4.LookAt(new Vector3(-7.0f, 5.0f, -7.0f), new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 1.0f, 0.0f));
             GL.LoadMatrix(Matrix4.Transpose(lookAt).Matrix);
 
-            GL.Disable(EnableCap.Texture2D);
-            GL.Disable(EnableCap.DepthTest);
-            grid.Render();
-            GL.Enable(EnableCap.DepthTest);
-            GL.Enable(EnableCap.Texture2D);
+            RenderWorld();
 
-            GL.Color3(1f, 1f, 1f);//white
-            GL.BindTexture(TextureTarget.Texture2D, crazyTexture);
-            GL.Begin(PrimitiveType.Triangles);
-                GL.TexCoord2(1, 0);
-                GL.Vertex3(1, 4, 2);//top right
-                GL.TexCoord2(0,0);
-                GL.Vertex3(1, 4, -2);//top left
-                GL.TexCoord2(0, 1);
-                GL.Vertex3(1, 0, -2);//bottom left
+            GL.Clear(ClearBufferMask.DepthBufferBit);
 
-                GL.TexCoord2(1, 0);
-                GL.Vertex3(1, 4, 2);//top right
-                GL.TexCoord2(0, 1);
-                GL.Vertex3(1, 0, -2);//bottom left
-                GL.TexCoord2(1, 1);
-                GL.Vertex3(1, 0, 2);//bottom Right
-            GL.End();
-            GL.BindTexture(TextureTarget.Texture2D, 0);
+            GL.MatrixMode(MatrixMode.Projection);
+            GL.PushMatrix();//backup 3d projection
+            GL.LoadIdentity();//clear
 
-            GL.BindTexture(TextureTarget.Texture2D, houseTexture);
-            //house 1
-            GL.Color3(1f, 1f, 1f);
-            GL.PushMatrix();
-                GL.Translate(-1f, 0.5f, -1f);
-                GL.Rotate(-130f, 0f, 1f, 0f);
-                GL.Scale(0.57f, 1f, 1f);
-                GL.Scale(3f, 3f, 3f);
-                GL.Begin(PrimitiveType.Triangles);
+            GL.MatrixMode(MatrixMode.Modelview);//switch to model
+            GL.PushMatrix();//back up modelview
+            GL.LoadIdentity();//clear
 
-            GL.TexCoord2(house1_uv_right, house1_uv_top);
-                GL.Vertex3(0.5f, 0.5f, 0f);//top right
-            GL.TexCoord2(house1_uv_left, house1_uv_top);
-                GL.Vertex3(-0.5f, 0.5f, 0f);//top left
-            GL.TexCoord2(house1_uv_left, house1_uv_bottom);
-                GL.Vertex3(-0.5f, -0.5f, 0f);//bottom left
-            GL.TexCoord2(house1_uv_right, house1_uv_top);
-                GL.Vertex3(0.5, 0.5, 0);//top right
-            GL.TexCoord2(house1_uv_left, house1_uv_bottom);
-                GL.Vertex3(-0.5, -0.5, 0);//bottom left
-            GL.TexCoord2(house1_uv_right, house1_uv_bottom);
-                GL.Vertex3(0.5, -0.5, 0);//bottom right
-                GL.End();
+            //set gl.ortho
+            //RenderUI();
+
+            GL.MatrixMode(MatrixMode.Projection);//switch back to world
             GL.PopMatrix();
-            // house 2
-            GL.Color3(1f, 1f, 1f);
-            GL.PushMatrix();
-                GL.Translate(-2f, 0.5f, -3f);
-                GL.Rotate(-130f, 0f, 1f, 0f);
-                GL.Scale(0.53f, 1f, 1f);
-                GL.Scale(3f, 3f, 3f);
-                GL.Begin(PrimitiveType.Triangles);
-            GL.TexCoord2(house2_uv_right, house2_uv_top);
-                GL.Vertex3(0.5, 0.5, 0);//top right
-            GL.TexCoord2(house2_uv_left, house2_uv_top);
-                GL.Vertex3(-0.5, 0.5, 0);//top left
-            GL.TexCoord2(house2_uv_left, house2_uv_bottom);
-                GL.Vertex3(-0.5, -0.5, 0);//bottom left
-            GL.TexCoord2(house2_uv_right, house2_uv_top);
-                GL.Vertex3(0.5, 0.5, 0);//top right
-            GL.TexCoord2(house2_uv_left, house2_uv_bottom);
-                GL.Vertex3(-0.5, -0.5, 0);//bottom left
-            GL.TexCoord2(house2_uv_right, house2_uv_bottom);
-                GL.Vertex3(0.5, -0.5, 0);//bottom Right
-                GL.End();
+
+            GL.MatrixMode(MatrixMode.Modelview);//restore 3d modelview
             GL.PopMatrix();
-            
-            GL.BindTexture(TextureTarget.Texture2D, 0);
+            // We make sure the matrix mode is modelview for the next render iteration
         }
         public override void Resize(int width, int height) {
             GL.Viewport(0, 0, width, height);
@@ -197,6 +153,84 @@ namespace GameApplication {
             GL.Vertex3(right, bottom, 0);
 
             GL.End();
+        }
+        public void RenderWorld() {
+            GL.Disable(EnableCap.Texture2D);
+            GL.Disable(EnableCap.DepthTest);
+            grid.Render();
+            GL.Enable(EnableCap.DepthTest);
+            GL.Enable(EnableCap.Texture2D);
+
+            GL.Color3(1f, 1f, 1f);//white
+            GL.BindTexture(TextureTarget.Texture2D, crazyTexture);
+            GL.Begin(PrimitiveType.Triangles);
+            GL.TexCoord2(1, 0);
+            GL.Vertex3(1, 4, 2);//top right
+            GL.TexCoord2(0, 0);
+            GL.Vertex3(1, 4, -2);//top left
+            GL.TexCoord2(0, 1);
+            GL.Vertex3(1, 0, -2);//bottom left
+
+            GL.TexCoord2(1, 0);
+            GL.Vertex3(1, 4, 2);//top right
+            GL.TexCoord2(0, 1);
+            GL.Vertex3(1, 0, -2);//bottom left
+            GL.TexCoord2(1, 1);
+            GL.Vertex3(1, 0, 2);//bottom Right
+            GL.End();
+            GL.BindTexture(TextureTarget.Texture2D, 0);
+
+            GL.BindTexture(TextureTarget.Texture2D, houseTexture);
+            //house 1
+            GL.Color3(1f, 1f, 1f);
+            GL.PushMatrix();
+            GL.Translate(-1f, 0.5f, -1f);
+            GL.Rotate(-130f, 0f, 1f, 0f);
+            GL.Scale(0.57f, 1f, 1f);
+            GL.Scale(3f, 3f, 3f);
+            GL.Begin(PrimitiveType.Triangles);
+
+            GL.TexCoord2(house1_uv_right, house1_uv_top);
+            GL.Vertex3(0.5f, 0.5f, 0f);//top right
+            GL.TexCoord2(house1_uv_left, house1_uv_top);
+            GL.Vertex3(-0.5f, 0.5f, 0f);//top left
+            GL.TexCoord2(house1_uv_left, house1_uv_bottom);
+            GL.Vertex3(-0.5f, -0.5f, 0f);//bottom left
+            GL.TexCoord2(house1_uv_right, house1_uv_top);
+            GL.Vertex3(0.5, 0.5, 0);//top right
+            GL.TexCoord2(house1_uv_left, house1_uv_bottom);
+            GL.Vertex3(-0.5, -0.5, 0);//bottom left
+            GL.TexCoord2(house1_uv_right, house1_uv_bottom);
+            GL.Vertex3(0.5, -0.5, 0);//bottom right
+            GL.End();
+            GL.PopMatrix();
+            // house 2
+            GL.Color3(1f, 1f, 1f);
+            GL.PushMatrix();
+            GL.Translate(-2f, 0.5f, -3f);
+            GL.Rotate(-130f, 0f, 1f, 0f);
+            GL.Scale(0.53f, 1f, 1f);
+            GL.Scale(3f, 3f, 3f);
+            GL.Begin(PrimitiveType.Triangles);
+            GL.TexCoord2(house2_uv_right, house2_uv_top);
+            GL.Vertex3(0.5, 0.5, 0);//top right
+            GL.TexCoord2(house2_uv_left, house2_uv_top);
+            GL.Vertex3(-0.5, 0.5, 0);//top left
+            GL.TexCoord2(house2_uv_left, house2_uv_bottom);
+            GL.Vertex3(-0.5, -0.5, 0);//bottom left
+            GL.TexCoord2(house2_uv_right, house2_uv_top);
+            GL.Vertex3(0.5, 0.5, 0);//top right
+            GL.TexCoord2(house2_uv_left, house2_uv_bottom);
+            GL.Vertex3(-0.5, -0.5, 0);//bottom left
+            GL.TexCoord2(house2_uv_right, house2_uv_bottom);
+            GL.Vertex3(0.5, -0.5, 0);//bottom Right
+            GL.End();
+            GL.PopMatrix();
+
+            GL.BindTexture(TextureTarget.Texture2D, 0);
+        }
+        public void RenderUI() {
+
         }
     }
 }
