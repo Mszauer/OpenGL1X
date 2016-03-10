@@ -14,6 +14,7 @@ namespace GameApplication {
         int crazyTexture = 0;
         int houseTexture = 0;
         int uiTexture = 0;
+        Size uiTextureSize;
         float house1_uv_top = 0f;
         float house1_uv_bottom = 0f;
         float house1_uv_left = 0f;
@@ -37,6 +38,8 @@ namespace GameApplication {
             GL.BindTexture(TextureTarget.Texture2D, crazyTexture);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMagFilter.Linear);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
             {
                 //load bmp texture
                 Bitmap bmp = new Bitmap("Assets/crazy_taxi.png");
@@ -70,8 +73,18 @@ namespace GameApplication {
             uiTexture = GL.GenTexture();
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMagFilter.Linear);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
-            //set parameters like above
-            //create uv ints
+            {
+                //load bmp texture
+                Bitmap bmp = new Bitmap("Assets/ui_atlas.png");
+                //get the data about bmp
+                BitmapData bmp_data = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+                uiTextureSize = new Size(bmp.Width, bmp.Height);
+                //upload data to gpu
+                GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, bmp_data.Width, bmp_data.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, bmp_data.Scan0);
+                //mark cpu memory for disposal
+                bmp.UnlockBits(bmp_data);
+                bmp.Dispose();
+            }
         }
         public override void Shutdown() {
             GL.BindTexture(TextureTarget.Texture2D, 0);
@@ -99,8 +112,8 @@ namespace GameApplication {
             GL.PushMatrix();//back up modelview
             GL.LoadIdentity();//clear
 
-            //set gl.ortho
-            //RenderUI();
+           
+            RenderUI(uiTexture,uiTextureSize);
 
             GL.MatrixMode(MatrixMode.Projection);//switch back to world
             GL.PopMatrix();
@@ -164,19 +177,21 @@ namespace GameApplication {
             GL.Color3(1f, 1f, 1f);//white
             GL.BindTexture(TextureTarget.Texture2D, crazyTexture);
             GL.Begin(PrimitiveType.Triangles);
-            GL.TexCoord2(1, 0);
-            GL.Vertex3(1, 4, 2);//top right
-            GL.TexCoord2(0, 0);
-            GL.Vertex3(1, 4, -2);//top left
-            GL.TexCoord2(0, 1);
-            GL.Vertex3(1, 0, -2);//bottom left
+            {
+                GL.TexCoord2(2, -2);
+                GL.Vertex3(1, 4, 2);//top right
+                GL.TexCoord2(-2, -2);
+                GL.Vertex3(1, 4, -2);//top left
+                GL.TexCoord2(-2, 2);
+                GL.Vertex3(1, 0, -2);//bottom left
 
-            GL.TexCoord2(1, 0);
-            GL.Vertex3(1, 4, 2);//top right
-            GL.TexCoord2(0, 1);
-            GL.Vertex3(1, 0, -2);//bottom left
-            GL.TexCoord2(1, 1);
-            GL.Vertex3(1, 0, 2);//bottom Right
+                GL.TexCoord2(2, -2);
+                GL.Vertex3(1, 4, 2);//top right
+                GL.TexCoord2(-2, 2);
+                GL.Vertex3(1, 0, -2);//bottom left
+                GL.TexCoord2(2, 2);
+                GL.Vertex3(1, 0, 2);//bottom Right
+            }
             GL.End();
             GL.BindTexture(TextureTarget.Texture2D, 0);
 
@@ -229,8 +244,17 @@ namespace GameApplication {
 
             GL.BindTexture(TextureTarget.Texture2D, 0);
         }
-        public void RenderUI() {
+        public void RenderUI(int texID,Size sourceImage) {
+            int screenWidth = MainGameWindow.Window.Width;
+            int screenHeight = MainGameWindow.Window.Height;
+            GL.Ortho(0, screenWidth, screenHeight, 0, -1, 1);
 
+            Rectangle healthPosition = new Rectangle(10, 10, 210, 43);
+            Rectangle healthUVPosition = new Rectangle(2, 2, 421, 87);
+            GL.BindTexture(TextureTarget.Texture2D, uiTexture);
+            DrawTexture(texID, healthPosition, healthUVPosition, sourceImage);//draw health bar
+
+            GL.BindTexture(TextureTarget.Texture2D, 0);
         }
     }
 }
