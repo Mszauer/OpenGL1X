@@ -71,6 +71,7 @@ namespace GameApplication {
                 bmp.Dispose();
             }
             uiTexture = GL.GenTexture();
+            GL.BindTexture(TextureTarget.Texture2D, uiTexture);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMagFilter.Linear);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
             {
@@ -249,11 +250,32 @@ namespace GameApplication {
             int screenHeight = MainGameWindow.Window.Height;
             GL.Ortho(0, screenWidth, screenHeight, 0, -1, 1);
 
+            GL.BindTexture(TextureTarget.Texture2D, uiTexture);
+
             Rectangle healthPosition = new Rectangle(10, 10, 210, 43);
             Rectangle healthUVPosition = new Rectangle(2, 2, 421, 87);
-            GL.BindTexture(TextureTarget.Texture2D, uiTexture);
             DrawTexture(texID, healthPosition, healthUVPosition, sourceImage);//draw health bar
 
+            Rectangle fbUVPosition = new Rectangle(230, 102, 92, 92);
+            int fbRight = screenWidth - 10;
+            int fbBottom = screenHeight - 10;
+            int fbLeft = fbRight - fbUVPosition.Width;
+            int fbTop = fbBottom - fbUVPosition.Height;
+            DrawTexture(texID, new Rectangle(fbLeft, fbTop, 92, 92), fbUVPosition, sourceImage);//draw fb button 92=texture width/heigh
+
+            Rectangle helpUVPosition = new Rectangle(120, 104, 92, 92);
+            int helpRight = fbLeft - 10;
+            int helpBottom = screenHeight - 10;
+            int helpLeft = helpRight - helpUVPosition.Width;
+            int helpTop = helpBottom - helpUVPosition.Height;
+            DrawTexture(texID, new Rectangle(helpLeft, helpTop, 92, 92), helpUVPosition, sourceImage);//draw help button. 92=texture width/heigh
+
+            Rectangle homeUVPosition = new Rectangle(16, 104, 92, 92);
+            int homeRight = helpLeft - 10;
+            int homeBottom = screenHeight - 10;
+            int homeLeft = homeRight - homeUVPosition.Width;
+            int homeTop = homeBottom - homeUVPosition.Height;
+            DrawTexture(texID, new Rectangle(homeLeft, homeTop, 92, 92), homeUVPosition, sourceImage);
             GL.BindTexture(TextureTarget.Texture2D, 0);
         }
     }
