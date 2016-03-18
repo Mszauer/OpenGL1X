@@ -11,6 +11,8 @@ using System.Drawing.Imaging;
 namespace GameApplication {
     class TexturedPlanes : Game {
         protected Grid grid = null;
+        protected SnowParticleSystem snow = null;
+
         int crazyTexture = 0;
         int houseTexture = 0;
         int uiTexture = 0;
@@ -23,10 +25,12 @@ namespace GameApplication {
         float house2_uv_bottom = 0f;
         float house2_uv_left = 0f;
         float house2_uv_right = 0f;
+
         public override void Initialize() {
             base.Initialize();
             base.Initialize();
             grid = new Grid(true);
+            snow = new SnowParticleSystem(5000, new Vector3(0f, 0f, 0f), new Vector3(10f, 10f, 10f));
             GL.Enable(EnableCap.DepthTest);
             GL.Enable(EnableCap.CullFace);
             GL.Enable(EnableCap.Texture2D);
@@ -95,13 +99,22 @@ namespace GameApplication {
             crazyTexture = -1;
             houseTexture = -1;
             uiTexture = -1;
+            snow.Shutdown();
             base.Shutdown();
         }
+
+        public override void Update(float dTime) {
+            snow.Update(dTime);
+            base.Update(dTime);
+        }
+
         public override void Render() {
             Matrix4 lookAt = Matrix4.LookAt(new Vector3(-7.0f, 5.0f, -7.0f), new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 1.0f, 0.0f));
             GL.LoadMatrix(Matrix4.Transpose(lookAt).Matrix);
 
             RenderWorld();
+
+            snow.Render();
 
             GL.Clear(ClearBufferMask.DepthBufferBit);
 

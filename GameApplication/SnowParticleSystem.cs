@@ -36,7 +36,59 @@ namespace GameApplication {
             texture = -1;
         }
         public override void Update(float dTime) {
-            for ()
+            for (int i = 0; i < numParticles;/*forever loop*/) {
+                //if out of bounds / hit border
+                if (particleList[i].position.Y <= systemOrigin.Y) {
+                    //copy the last particle into this one and reduce list by 1
+                    particleList[i] = particleList[numParticles--];
+                    //create new particle
+                    particleList[numParticles] = new Particle();
+                }
+                else {
+                    i++;//go to next particle
+                }
+            }
+            //store elapsed time
+            accumulatedTime += dTime;
+            //determine how many should be alive
+            int newParticles = (int)(SNOWFLAKE_PER_SEC * accumulatedTime);
+            //reduce stored time by newly spawned particle
+            accumulatedTime -= 1.0f / SNOWFLAKE_PER_SEC * newParticles;
+            //request more particles
+            Emit(newParticles);
+        }
+        public override void Render() {
+            GL.BindTexture(TextureTarget.Texture2D, texture);
+            GL.Begin(PrimitiveType.Quads);
+            for (int i = 0; i < numParticles; i++) {
+                Vector3 startPos = particleList[i].position;
+                float size = particleList[i].size;
+
+                GL.TexCoord2(0f, 1f);
+                GL.Vertex3(startPos.X, startPos.Y, startPos.Z);
+
+                GL.TexCoord2(1f, 1f);
+                GL.Vertex3(startPos.X + size, startPos.Y, startPos.Z);
+
+                GL.TexCoord2(1f, 0f);
+                GL.Vertex3(startPos.X + size, startPos.Y - size, startPos.Z);
+
+                GL.TexCoord2(0f, 0f);
+                GL.Vertex3(startPos.X, startPos.Y - size, startPos.Z);
+            }
+            GL.End();
+        }
+        public override void InitParticle(int index) {
+            particleList[index].position.X = systemOrigin.X + (float)random.NextDouble() * width;
+            particleList[index].position.Y = height;
+            particleList[index].position.Z = systemOrigin.Z + (float)random.NextDouble() * depth;
+
+            particleList[index].size = SNOWFLAKE_SIZE + (float)random.NextDouble() * SIZE_DELTA;
+
+            particleList[index].velocity.X = SNOWFLAKE_VELOCITY.X + (float)random.NextDouble() * VELOCITY_VARIATION.X;
+            particleList[index].velocity.Y = SNOWFLAKE_VELOCITY.Y + (float)random.NextDouble() * VELOCITY_VARIATION.Y;
+            particleList[index].velocity.Z = SNOWFLAKE_VELOCITY.Z + (float)random.NextDouble() * VELOCITY_VARIATION.Z;
+
         }
     }
 }
