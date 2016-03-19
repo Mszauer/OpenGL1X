@@ -37,10 +37,11 @@ namespace GameApplication {
         }
         public override void Update(float dTime) {
             for (int i = 0; i < numParticles;/*forever loop*/) {
+                particleList[i].position = particleList[i].position + particleList[i].velocity * dTime;
                 //if out of bounds / hit border
                 if (particleList[i].position.Y <= systemOrigin.Y) {
                     //copy the last particle into this one and reduce list by 1
-                    particleList[i] = particleList[numParticles--];
+                    particleList[i] = particleList[--numParticles];
                     //create new particle
                     particleList[numParticles] = new Particle();
                 }
