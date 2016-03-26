@@ -55,6 +55,7 @@
     <Compile Include="BoxDemon.cs" />
     <Compile Include="Circle.cs" />
     <Compile Include="Directional1.cs" />
+    <Compile Include="DrawElements.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GLSolarSystem.cs" />
     <Compile Include="Grid.cs" />
