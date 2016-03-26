@@ -91,6 +91,7 @@
     <Compile Include="SolarSystem.cs" />
     <Compile Include="SpotLight.cs" />
     <Compile Include="TexturedPlanes.cs" />
+    <Compile Include="VBO.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

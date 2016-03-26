@@ -7,11 +7,14 @@ using OpenTK.Graphics.OpenGL;
 using Math_Implementation;
 
 namespace GameApplication {
-    class DrawElements : Game{
+    class VBO : Game {
         Grid grid = null;
         float[] cubeVertices = null;
         float[] cubeColors = null;
         uint[] cubeIndicies = null;
+        protected int vertexBuffer;
+        protected int indexBuffer;
+        protected int numIndices;
 
         public override void Resize(int width, int height) {
             GL.Viewport(0, 0, width, height);
@@ -65,6 +68,19 @@ namespace GameApplication {
                 3,2,6,//right triangle1
                 6,7,3//right triangle2
             };
+
+            numIndices = cubeIndicies.Length;
+
+            vertexBuffer = GL.GenBuffer();
+            GL.BindBuffer(BufferTarget.ArrayBuffer, vertexBuffer);
+            GL.BufferData(BufferTarget.ArrayBuffer, new System.IntPtr(cubeVertices.Length * sizeof(float)), cubeVertices, BufferUsageHint.DynamicDraw);
+
+            indexBuffer = GL.GenBuffer();
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, indexBuffer);
+            GL.BufferData(BufferTarget.ElementArrayBuffer, new System.IntPtr(cubeIndicies.Length * sizeof(uint)), cubeIndicies, BufferUsageHint.StaticDraw);
+
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, 0);
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, 0);
         }
         public override void Render() {
             Matrix4 lookAt = Matrix4.LookAt(new Vector3(-7.0f, 5.0f, -7.0f), new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 1.0f, 0.0f));
@@ -76,13 +92,34 @@ namespace GameApplication {
 
             GL.EnableClientState(ArrayCap.VertexArray);
             GL.EnableClientState(ArrayCap.ColorArray);
-            GL.VertexPointer(3, VertexPointerType.Float, 0, cubeVertices);
-            GL.ColorPointer(3, ColorPointerType.Float, 0, cubeColors);
 
-            GL.DrawElements(PrimitiveType.Triangles, cubeIndicies.Length, DrawElementsType.UnsignedInt, cubeIndicies);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, vertexBuffer);
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, indexBuffer);
+
+            // 0 bytes from the begenning of the buffer
+            GL.VertexPointer(3, VertexPointerType.Float, 0, new System.IntPtr(0));
+            // The buffer first contains positions, which are 8 vertices, made up of 3 floats each.
+            // after that comes the color information, therefore the colors are:
+            // 8 * 3 * sizeof(float) bytes away from the begenning of the buffer
+            GL.ColorPointer(3, ColorPointerType.Float, 0, new System.IntPtr(sizeof(float)*8*3));
+
+            // The index buffer only contains indices we want to draw, so they are 0 bytes
+            // from the begenning of the array. You can use the constant i use here instead
+            // of making a new IntPtr, if the offset you are looking for is 0
+            GL.DrawElements(PrimitiveType.Triangles, numIndices, DrawElementsType.UnsignedInt, System.IntPtr.Zero);
+
+            GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, 0);
 
             GL.DisableClientState(ArrayCap.VertexArray);
             GL.DisableClientState(ArrayCap.ColorArray);
+        }
+        public override void Shutdown() {
+            GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, 0);
+
+            GL.DeleteBuffer(vertexBuffer);
+            GL.DeleteBuffer(indexBuffer);
         }
     }
 }
