@@ -27,7 +27,7 @@ namespace GameApplication {
         public override void Initialize() {
             grid = new Grid(true);
 
-            cubeVertices = new float[] {
+            cubeVertices = new float[] { //includes colors
                 -1.0f,-1.0f,1.0f,//vertex 1
                 1.0f,-1.0f,1.0f,//vertex2
                 1.0f,1.0f,1.0f,//vertex3
@@ -35,10 +35,8 @@ namespace GameApplication {
                 -1.0f,-1.0f,-1.0f,//vertex5
                 1.0f,-1.0f,-1.0f,//vertex6
                 1.0f,1.0f,-1.0f,//vertex7
-                -1.0f,1.0f,-1.0f//vertex8
-            };
-
-            cubeColors = new float[] {
+                -1.0f,1.0f,-1.0f,//vertex8
+                //colors
                 1.0f,0.0f,0.0f,//vertex1
                 0.0f,1.0f,0.0f,//vertex2
                 0.0f,0.0f,1.0f,//vertex3
