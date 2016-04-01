@@ -60,9 +60,13 @@ namespace GameApplication {
                     }
                     else if (content[0] == "f") {
                         //face
-                        //have all faces, split in x/y/z form
-                        //want linear array xyzxyzxyzxyz
-
+                        List<float> faces = new List<float>();
+                        for (int i = 1; i < content.Length - 1; i++) { //loop through values
+                            content[i].Split('/'); // split based on /
+                            foreach (char value in content[i]) { //loop through all chars after splitting
+                                faces.Add(System.Convert.ToInt32(value));//add to create linear array?
+                            }
+                        }
                     }
                     else if (content[0] == "s") {
                         //specular
