@@ -151,11 +151,11 @@ namespace GameApplication {
                 GL.NormalPointer(NormalPointerType.Float, 0, new System.IntPtr(numVerts * sizeof(float)));
             }
             if (hasUvs) {
-                GL.TexCoordPointer(numUvs, TexCoordPointerType.Int, 0, new System.IntPtr((numVerts + numNormals) * sizeof(float)));
+                GL.TexCoordPointer(2, TexCoordPointerType.Int, 0, new System.IntPtr((numVerts + numNormals) * sizeof(float)));
             }
 
             //call GL.DrawArrays, always triangles
-            GL.DrawArrays(PrimitiveType.Triangles, 0, sizeof(float) * (numNormals+numVerts+numUvs));
+            GL.DrawArrays(PrimitiveType.Triangles, 0, numVerts);
 
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
             if (hasUvs) {
