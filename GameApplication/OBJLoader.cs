@@ -64,15 +64,15 @@ namespace GameApplication {
                         //face
                         for (int i = 1; i < content.Length - 1; i++) { //loop through values
                             string[] subsplit = content[i].Split('/'); // split based on /
-                            if (string.IsNullOrEmpty(subsplit[0])) {
+                            if (!string.IsNullOrEmpty(subsplit[0])) {
                                 //vertindex
                                 vertIndex.Add(System.Convert.ToUInt32(subsplit[0]) -1);
                             }
-                            if (string.IsNullOrEmpty(subsplit[1])) {
+                            if (!string.IsNullOrEmpty(subsplit[1])) {
                                 //uvindex
                                 uvIndex.Add(System.Convert.ToUInt32(subsplit[1]) - 1);
                             }
-                            if (string.IsNullOrEmpty(subsplit[2])) {
+                            if (!string.IsNullOrEmpty(subsplit[2])) {
                                 //normindex
                                 normIndex.Add(System.Convert.ToUInt32(subsplit[2]) - 1);
                             }
