@@ -136,9 +136,13 @@ namespace GameApplication {
                 useTextures = false;
             }
             //enable client states , check arguments
-            GL.EnableClientState(ArrayCap.NormalArray);
             GL.EnableClientState(ArrayCap.VertexArray);
-            GL.EnableClientState(ArrayCap.TextureCoordArray);
+            if (hasNormals) {
+                GL.EnableClientState(ArrayCap.NormalArray);
+            }
+            if (hasUvs) {
+                GL.EnableClientState(ArrayCap.TextureCoordArray);
+            }
             //bind array buffer
             GL.BindBuffer(BufferTarget.ArrayBuffer,vertexBuffer);
             //set pointers
@@ -154,10 +158,13 @@ namespace GameApplication {
             GL.DrawArrays(PrimitiveType.Triangles, 0, sizeof(float) * (numNormals+numVerts+numUvs));
 
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
-
-            GL.DisableClientState(ArrayCap.TextureCoordArray);
+            if (hasUvs) {
+                GL.DisableClientState(ArrayCap.TextureCoordArray);
+            }
+            if (hasNormals) {
+                GL.DisableClientState(ArrayCap.NormalArray);
+            }
             GL.DisableClientState(ArrayCap.VertexArray);
-            GL.DisableClientState(ArrayCap.NormalArray);
         }
     }
 }
