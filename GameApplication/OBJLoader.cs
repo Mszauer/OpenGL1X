@@ -143,11 +143,21 @@ namespace GameApplication {
             GL.BindBuffer(BufferTarget.ArrayBuffer,vertexBuffer);
             //set pointers
             GL.VertexPointer(numVerts, VertexPointerType.Float, 0, new System.IntPtr(0));
-            GL.NormalPointer(NormalPointerType.Float, 0, new System.IntPtr(numVerts * sizeof(float)));
-            GL.TexCoordPointer(numUvs, TexCoordPointerType.Int, 0, new System.IntPtr((numVerts + numNormals) * sizeof(float)));
+            if (hasNormals) {
+                GL.NormalPointer(NormalPointerType.Float, 0, new System.IntPtr(numVerts * sizeof(float)));
+            }
+            if (hasUvs) {
+                GL.TexCoordPointer(numUvs, TexCoordPointerType.Int, 0, new System.IntPtr((numVerts + numNormals) * sizeof(float)));
+            }
 
             //call GL.DrawArrays, always triangles
             GL.DrawArrays(PrimitiveType.Triangles, 0, sizeof(float) * (numNormals+numVerts+numUvs));
+
+            GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+
+            GL.DisableClientState(ArrayCap.TextureCoordArray);
+            GL.DisableClientState(ArrayCap.VertexArray);
+            GL.DisableClientState(ArrayCap.NormalArray);
         }
     }
 }
