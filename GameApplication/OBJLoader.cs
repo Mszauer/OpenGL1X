@@ -60,11 +60,11 @@ namespace GameApplication {
                         for (int i = 1; i < content.Length - 1; i++) { //loop through values
                             string[] subsplit = content[i].Split('/'); // split based on /
                             //vertindex
-                            vertIndex.Add(System.Convert.ToUInt32(content[i]) + 1);
+                            vertIndex.Add(System.Convert.ToUInt32(subsplit[0]) -1);
                             //normindex
-                            normIndex.Add(System.Convert.ToUInt32(content[i]) + 2);
+                            normIndex.Add(System.Convert.ToUInt32(subsplit[1]) -1);
                             //uvindex
-                            uvIndex.Add(System.Convert.ToUInt32(content[i]) + 3);
+                            uvIndex.Add(System.Convert.ToUInt32(subsplit[2]) -1);
                         }
                     }
                     else if (content[0] == "s") {
