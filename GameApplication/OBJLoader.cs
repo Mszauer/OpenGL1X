@@ -43,7 +43,9 @@ namespace GameApplication {
                     else if (content[0] == "v") {
                         //add vertex
                          //vertices
-                         vertices.Add(System.Convert.ToSingle(content[0]));
+                         vertices.Add(System.Convert.ToSingle(content[1]));
+                         vertices.Add(System.Convert.ToSingle(content[2]));
+                         vertices.Add(System.Convert.ToSingle(content[3]));
                     }
                     else if (content[0] == "vt") {
                         // vertex texture
@@ -54,6 +56,9 @@ namespace GameApplication {
                     else if (content[0] == "vn") {
                         //vertex normal
                         //normals
+                        normals.Add(System.Convert.ToSingle(content[1]));
+                        normals.Add(System.Convert.ToSingle(content[2]));
+                        normals.Add(System.Convert.ToSingle(content[3]));
                     }
                     else if (content[0] == "f") {
                         //face
@@ -63,12 +68,14 @@ namespace GameApplication {
                                 //vertindex
                                 vertIndex.Add(System.Convert.ToUInt32(subsplit[0]) -1);
                             }
-
-                            //uvindex
-                            uvIndex.Add(System.Convert.ToUInt32(subsplit[1]) - 1);
-                            //normindex
-                            normIndex.Add(System.Convert.ToUInt32(subsplit[2]) -1);
-                            
+                            if (string.IsNullOrEmpty(subsplit[1])) {
+                                //uvindex
+                                uvIndex.Add(System.Convert.ToUInt32(subsplit[1]) - 1);
+                            }
+                            if (string.IsNullOrEmpty(subsplit[2])) {
+                                //normindex
+                                normIndex.Add(System.Convert.ToUInt32(subsplit[2]) - 1);
+                            }
                         }
                     }
                     else if (content[0] == "s") {
@@ -129,13 +136,18 @@ namespace GameApplication {
                 useTextures = false;
             }
             //enable client states , check arguments
+            GL.EnableClientState(ArrayCap.IndexArray);
+            GL.EnableClientState(ArrayCap.ColorArray);
+            GL.EnableClientState(ArrayCap.VertexArray);
             //bind array buffer
+            GL.BindBuffer(BufferTarget.ArrayBuffer,vertexBuffer);
             //set pointers
-            //vertex ptr offset = 0;
-            //normal ptr offset = numberts * sizeof(float)
-            //uv ptr offset = (numverts+numnorms) * sizeof(float)
+            GL.VertexPointer(numVerts, VertexPointerType.Float, 0, new System.IntPtr(0));
+            GL.NormalPointer(NormalPointerType.Float, numVerts * sizeof(float), new System.IntPtr(numVerts * sizeof(float)));
+            GL.ColorPointer(numUvs, ColorPointerType.Int, (numVerts + numNormals) * sizeof(float), new System.IntPtr((numVerts + numNormals) * sizeof(float)));
 
             //call GL.DrawArrays, always triangles
+            GL.DrawArrays(PrimitiveType.Triangles, 0, sizeof(float) * (numNormals+numVerts+numUvs));
         }
     }
 }
