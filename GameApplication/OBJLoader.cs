@@ -136,15 +136,15 @@ namespace GameApplication {
                 useTextures = false;
             }
             //enable client states , check arguments
-            GL.EnableClientState(ArrayCap.IndexArray);
-            GL.EnableClientState(ArrayCap.ColorArray);
+            GL.EnableClientState(ArrayCap.NormalArray);
             GL.EnableClientState(ArrayCap.VertexArray);
+            GL.EnableClientState(ArrayCap.TextureCoordArray);
             //bind array buffer
             GL.BindBuffer(BufferTarget.ArrayBuffer,vertexBuffer);
             //set pointers
             GL.VertexPointer(numVerts, VertexPointerType.Float, 0, new System.IntPtr(0));
-            GL.NormalPointer(NormalPointerType.Float, numVerts * sizeof(float), new System.IntPtr(numVerts * sizeof(float)));
-            GL.ColorPointer(numUvs, ColorPointerType.Int, (numVerts + numNormals) * sizeof(float), new System.IntPtr((numVerts + numNormals) * sizeof(float)));
+            GL.NormalPointer(NormalPointerType.Float, 0, new System.IntPtr(numVerts * sizeof(float)));
+            GL.TexCoordPointer(numUvs, TexCoordPointerType.Int, 0, new System.IntPtr((numVerts + numNormals) * sizeof(float)));
 
             //call GL.DrawArrays, always triangles
             GL.DrawArrays(PrimitiveType.Triangles, 0, sizeof(float) * (numNormals+numVerts+numUvs));
