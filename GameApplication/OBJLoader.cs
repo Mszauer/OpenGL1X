@@ -42,30 +42,29 @@ namespace GameApplication {
                     }
                     else if (content[0] == "v") {
                         //add vertex
-                        foreach (string vertex in content) {
-                            
-                        }
+                         //vertices
+                         vertices.Add(content[0]);
                     }
                     else if (content[0] == "vt") {
                         // vertex texture
-                        foreach (string vertex in content) {
+                        texCoord.Add(System.Convert.ToSingle(content[1]));
+                        texCoord.Add(System.Convert.ToSingle(content[2]));
 
-                        }
                     }
                     else if (content[0] == "vn") {
                         //vertex normal
-                        foreach (string vertex in content) {
-
-                        }
+                        //normals
                     }
                     else if (content[0] == "f") {
                         //face
-                        List<float> faces = new List<float>();
                         for (int i = 1; i < content.Length - 1; i++) { //loop through values
-                            content[i].Split('/'); // split based on /
-                            foreach (char value in content[i]) { //loop through all chars after splitting
-                                faces.Add(System.Convert.ToInt32(value));//add to create linear array?
-                            }
+                            string[] subsplit = content[i].Split('/'); // split based on /
+                            //vertindex
+                            vertIndex.Add(System.Convert.ToUInt32(content[i]) + 1);
+                            //normindex
+                            normIndex.Add(System.Convert.ToUInt32(content[i]) + 2);
+                            //uvindex
+                            uvIndex.Add(System.Convert.ToUInt32(content[i]) + 3);
                         }
                     }
                     else if (content[0] == "s") {
