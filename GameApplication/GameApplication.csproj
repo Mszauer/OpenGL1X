@@ -93,6 +93,7 @@
     <Compile Include="SolarSystem.cs" />
     <Compile Include="SpotLight.cs" />
     <Compile Include="TexturedPlanes.cs" />
+    <Compile Include="Texturemanager.cs" />
     <Compile Include="VBO.cs" />
   </ItemGroup>
   <ItemGroup>
