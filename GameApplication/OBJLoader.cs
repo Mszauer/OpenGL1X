@@ -62,7 +62,7 @@ namespace GameApplication {
                     }
                     else if (content[0] == "f") {
                         //face
-                        for (int i = 1; i < content.Length - 1; i++) { //loop through values
+                        for (int i = 1; i < content.Length ; i++) { //loop through values
                             string[] subsplit = content[i].Split('/'); // split based on /
                             if (!string.IsNullOrEmpty(subsplit[0])) {
                                 //vertindex
@@ -146,7 +146,7 @@ namespace GameApplication {
             //bind array buffer
             GL.BindBuffer(BufferTarget.ArrayBuffer,vertexBuffer);
             //set pointers
-            GL.VertexPointer(numVerts, VertexPointerType.Float, 0, new System.IntPtr(0));
+            GL.VertexPointer(3, VertexPointerType.Float, 0, new System.IntPtr(0));
             if (hasNormals) {
                 GL.NormalPointer(NormalPointerType.Float, 0, new System.IntPtr(numVerts * sizeof(float)));
             }
