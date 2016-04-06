@@ -113,7 +113,7 @@ namespace GameApplication {
         #region PublicAPI
         public void Initialize() {
             if (isInitialized) {
-                Error("Trying to double initialize texture maanger");
+                Error("Trying to double initialize texture manager");
             }
             managedTextures = new List<TextureInstance>();
             managedTextures.Capacity = 100;
