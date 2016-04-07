@@ -78,6 +78,7 @@
     <Compile Include="MrRoboto.cs" />
     <Compile Include="OBJLoader.cs" />
     <Compile Include="OBJLoadingExample.cs" />
+    <Compile Include="OBJManager.cs" />
     <Compile Include="Particle.cs" />
     <Compile Include="ParticleSystem.cs" />
     <Compile Include="PointAttenuation.cs" />

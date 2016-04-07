@@ -67,16 +67,7 @@ namespace GameApplication {
                 return;
             }
         }
-        private bool IsPowerOfTwo(int x) {
-            if (x > 1) {
-                while (x % 2 == 0) {
-                    x >>= 1;
-                }
-            }
-            return x == 1;
-        }
 
-        //TODO LOAD TEXTURE FUTURE
         #endregion
 
         #region PublicAPI
@@ -88,35 +79,32 @@ namespace GameApplication {
             managedOBJ.Capacity = 100;
             isInitialized = true;
         }
+        public int LoadMOBJ(string objPath) {
+            InitCheck("Trying load obj without initializing OBJManager!");
+            if (string.IsNullOrEmpty(objPath)) {
+                Error("Load OBJ path was invalid");
+                throw new ArgumentException(objPath);
+            }
+            for (int i = 0; i < managedOBJ.Count; i++) {
+                if (managedOBJ[i].path == objPath) {
+                    managedOBJ[i].refCount++;
+                    return i;
+                }
+                if (managedOBJ[i].refCount <= 0) {
+                    managedOBJ[i].refCount++;
+                    managedOBJ[i].path = objPath;
+                    managedOBJ[i] = new OBJLoader(objPath);
+                    return i;
+                }
+            }
+
+            return managedOBJ.Count - 1;
+        }
         public void Shutdown() {
             
         }
         //load texture
         //unload texture
-        public int GetOBJWidth(int objID) {
-            InitCheck("Trying to access obj width without initializing OBJManager!");
-            IndexCheck(objID, "GetOBJWidth");
-
-            return managedOBJ[objID].width;
-        }
-        public int GetOBJHeight(int objID) {
-            InitCheck("Trying to access obj height without initializing OBJManager!");
-            IndexCheck(objID, "GetOBJHeight");
-
-            return managedOBJ[objID].height;
-        }
-        public Size GetOBJSize(int objID) {
-            InitCheck("Trying to access obj size without initializing OBJManager!");
-            IndexCheck(objID, "GetOBJSize");
-
-            return new Size(managedOBJ[objID].width,managedOBJ[objID].height);
-        }
-        public int GetGLHandle(int objID) {
-            InitCheck("Trying to access OBJ handle without initializing OBJManager!");
-            IndexCheck(objID, "GetGLHandle");
-
-            return managedOBJ[objID].GLHandle;
-        }
         #endregion
     }
 }
