@@ -23,16 +23,14 @@ namespace GameApplication {
 
         #region HelperClass
         private class OBJLoaderHelper {
-            public int GLHandle = -1;
             public string path = string.Empty;
             public int refCount = 0;
-            public int width = 0;
-            public int height = 0;
+            public OBJLoader loader = null;
         }
         #endregion
 
         #region HelperVariables
-        private List<OBJLoader> managedOBJ = null;
+        private List<OBJLoaderHelper> managedOBJ = null;
         private bool isInitialized = false;
         #endregion
 
@@ -75,7 +73,7 @@ namespace GameApplication {
             if (isInitialized) {
                 Error("Trying to double initialize OBJManager");
             }
-            managedOBJ = new List<OBJLoader>();
+            managedOBJ = new List<OBJLoaderHelper>();
             managedOBJ.Capacity = 100;
             isInitialized = true;
         }
@@ -91,13 +89,14 @@ namespace GameApplication {
                     return i;
                 }
                 if (managedOBJ[i].refCount <= 0) {
-                    managedOBJ[i].refCount++;
+                    managedOBJ[i].refCount = 1;
                     managedOBJ[i].path = objPath;
-                    managedOBJ[i] = new OBJLoader(objPath);
+                    managedOBJ[i] = new OBJLoaderHelper();
+                    managedOBJ[i].loader = new OBJLoader(objPath);
                     return i;
                 }
             }
-            managedOBJ.Add(new OBJLoader(objPath));
+            managedOBJ.Add(new OBJLoaderHelper());
             return managedOBJ.Count - 1; 
         }
         public void Shutdown() {
