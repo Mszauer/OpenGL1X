@@ -22,7 +22,7 @@ namespace GameApplication {
         #endregion
 
         #region HelperClass
-        private class OBJLoader {
+        private class OBJLoaderHelper {
             public int GLHandle = -1;
             public string path = string.Empty;
             public int refCount = 0;
@@ -79,7 +79,7 @@ namespace GameApplication {
             managedOBJ.Capacity = 100;
             isInitialized = true;
         }
-        public int LoadMOBJ(string objPath) {
+        public int LoadOBJ(string objPath) {
             InitCheck("Trying load obj without initializing OBJManager!");
             if (string.IsNullOrEmpty(objPath)) {
                 Error("Load OBJ path was invalid");
@@ -97,13 +97,12 @@ namespace GameApplication {
                     return i;
                 }
             }
-
-            return managedOBJ.Count - 1;
+            managedOBJ.Add(new OBJLoader(objPath));
+            return managedOBJ.Count - 1; 
         }
         public void Shutdown() {
             
         }
-        //load texture
         //unload texture
         #endregion
     }
