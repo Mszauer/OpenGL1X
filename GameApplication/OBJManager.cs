@@ -120,8 +120,7 @@ namespace GameApplication {
             managedOBJ[objID].refCount--;
             if (managedOBJ[objID].refCount == 0) {
                 managedOBJ[objID].loader.Destroy();
-                managedOBJ[i].loader = null;
-                managedOBJ[i] = null;
+                managedOBJ[objID].loader = null;
             }
             else if (managedOBJ[objID].refCount < 0) {
                 Error("Ref count of obj is less than 0 : " + managedOBJ[objID].path);
