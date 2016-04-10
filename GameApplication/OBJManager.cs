@@ -96,6 +96,15 @@ namespace GameApplication {
                     return i;
                 }
             }
+            for (int i = 0; i < managedOBJ.Count; i++) {
+                if (managedOBJ[i].refCount <= 0) {
+                    managedOBJ[i].refCount = 1;
+                    managedOBJ[i].path = objPath;
+                    managedOBJ[i] = new OBJLoaderHelper();
+                    managedOBJ[i].loader = new OBJLoader(objPath);
+                    return i;
+                }
+            }
             managedOBJ.Add(new OBJLoaderHelper());
             return managedOBJ.Count - 1; 
         }
