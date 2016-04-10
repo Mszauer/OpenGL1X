@@ -5,7 +5,7 @@ using Math_Implementation;
 namespace GameApplication {
     class OBJLoadingExample : Game {
         Grid grid = null;
-        OBJLoader model = null;
+        OBJManager models = null;
         protected Vector3 cameraAngle = new Vector3(0.0f, -25.0f, 10.0f);
         protected float rads = (float)(Math.PI / 180.0f);
 
@@ -20,6 +20,9 @@ namespace GameApplication {
         }
 
         public override void Initialize() {
+            models = OBJManager.Instance;
+            models.Initialize();
+            models.LoadOBJ("Assets/test_object.obj");
             GL.Enable(EnableCap.DepthTest);
             GL.Enable(EnableCap.CullFace);
             GL.Enable(EnableCap.Lighting);
@@ -28,7 +31,7 @@ namespace GameApplication {
             Resize(MainGameWindow.Window.Width, MainGameWindow.Window.Height);
 
             grid = new Grid(true);
-            model = new OBJLoader("Assets/test_object.obj");
+            models = OBJManager.Instance;
 
             GL.Light(LightName.Light0, LightParameter.Position, new float[] { 0.0f, 0.5f, 0.5f, 0.0f });
             GL.Light(LightName.Light0, LightParameter.Ambient, new float[] { 0f, 1f, 0f, 1f });
@@ -37,7 +40,7 @@ namespace GameApplication {
         }
 
         public override void Shutdown() {
-            model.Destroy();
+            models.Shutdown();
         }
 
         public override void Update(float dTime) {
@@ -60,7 +63,7 @@ namespace GameApplication {
             GL.Enable(EnableCap.Lighting);
 
             GL.Color3(1f, 1f, 1f);
-            model.Render(true, false);
+            models.Render(true, false);
         }
     }
 }

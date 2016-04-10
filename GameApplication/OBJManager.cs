@@ -8,7 +8,7 @@ namespace GameApplication {
     class OBJManager {
         #region Singleton
         private static OBJManager instance = null;
-        private static OBJManager Instance {
+        public static OBJManager Instance {
             get {
                 if (instance == null) {
                     instance = new OBJManager();
@@ -116,6 +116,12 @@ namespace GameApplication {
                 else if (managedOBJ[i].refCount < 0) {
                     Error("OBJ reference count is < 0, this should never happen!: " + managedOBJ[i].path);
                 }
+            }
+        }
+        public void Render(bool useNormals = true, bool useTextures = true) {
+            InitCheck("Trying to render without initializing OBJManager!");
+            for (int i = 0; i < managedOBJ.Count; i++) {
+                managedOBJ[i].loader.Render(useNormals, useTextures);
             }
         }
         //unload obj
