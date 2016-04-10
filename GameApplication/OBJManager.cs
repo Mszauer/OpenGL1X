@@ -104,6 +104,8 @@ namespace GameApplication {
             for(int i = 0; i < managedOBJ.Count; i++) {
                 if (managedOBJ[i].refCount > 0) {
                     Error("OBJ reference cound is > 0: " + managedOBJ[i].refCount);
+                    managedOBJ[i].loader.Destroy();
+                    managedOBJ[i].loader = null;
                     managedOBJ[i] = null;
                 }
                 else if (managedOBJ[i].refCount < 0) {
@@ -117,7 +119,9 @@ namespace GameApplication {
             IndexCheck(objID, "UnloadObj");
             managedOBJ[objID].refCount--;
             if (managedOBJ[objID].refCount == 0) {
-                //delete?
+                managedOBJ[objID].loader.Destroy();
+                managedOBJ[i].loader = null;
+                managedOBJ[i] = null;
             }
             else if (managedOBJ[objID].refCount < 0) {
                 Error("Ref count of obj is less than 0 : " + managedOBJ[objID].path);
