@@ -212,7 +212,8 @@ namespace Math_Implementation {
             theta = theta * (float)(Math.PI / 180);
             Matrix4 result = new Matrix4((float)Math.Cos(theta), -(float)Math.Sin(theta), 0, 0,
                                          (float)Math.Sin(theta), (float)Math.Cos(theta), 0, 0,
-                                         0, 0, 1, 0);
+                                         0, 0, 1, 0,
+                                         0,0,0,1);
             return result;
         }
         public static Matrix4 AngleAxis(float angle, float u, float v, float w) {
