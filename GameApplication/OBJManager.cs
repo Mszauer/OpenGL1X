@@ -99,6 +99,9 @@ namespace GameApplication {
                 }
             }
             managedOBJ.Add(new OBJLoaderHelper());
+            managedOBJ[managedOBJ.Count - 1].refCount = 1;
+            managedOBJ[managedOBJ.Count - 1].path = objPath;
+            managedOBJ[managedOBJ.Count - 1].loader = new OBJLoader(objPath);
             return managedOBJ.Count - 1; 
         }
         public void Shutdown() {
