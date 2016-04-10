@@ -124,7 +124,7 @@ namespace GameApplication {
 
             for (int i = 0; i < managedTextures.Count; i++) {
                 if (managedTextures[i].refCount > 0) {
-                    Warning("Texture refernce is > 0: " + managedTextures[i].path);
+                    Warning("Texture reference is > 0: " + managedTextures[i].path);
 
                     GL.DeleteTexture(managedTextures[i].glHandle);
                     managedTextures[i] = null;

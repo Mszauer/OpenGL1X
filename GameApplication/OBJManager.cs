@@ -100,9 +100,29 @@ namespace GameApplication {
             return managedOBJ.Count - 1; 
         }
         public void Shutdown() {
-            
+            InitCheck("Trying to shutdown UnInitialized OBJManager!");
+            for(int i = 0; i < managedOBJ.Count; i++) {
+                if (managedOBJ[i].refCount > 0) {
+                    Error("OBJ reference cound is > 0: " + managedOBJ[i].refCount);
+                    managedOBJ[i] = null;
+                }
+                else if (managedOBJ[i].refCount < 0) {
+                    Error("OBJ reference count is < 0, this should never happen!: " + managedOBJ[i].path);
+                }
+            }
         }
-        //unload texture
+        //unload obj
+        public void UnloadObj(int objID) {
+            InitCheck("Trying to unload obj without initializing OBJManager!");
+            IndexCheck(objID, "UnloadObj");
+            managedOBJ[objID].refCount--;
+            if (managedOBJ[objID].refCount == 0) {
+                //delete?
+            }
+            else if (managedOBJ[objID].refCount < 0) {
+                Error("Ref count of obj is less than 0 : " + managedOBJ[objID].path);
+            }
+        }
         #endregion
     }
 }
