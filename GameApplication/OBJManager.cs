@@ -126,6 +126,14 @@ namespace GameApplication {
                 Error("Ref count of obj is less than 0 : " + managedOBJ[objID].path);
             }
         }
+        public OBJLoader GetModel(int objID) {
+            InitCheck("Trying to retrieve model without initializing OBJManager!");
+            IndexCheck(objID, "GetModel");
+            if (managedOBJ[objID].loader == null) {
+                Error("Trying retrieve null model: " + objID);
+            }
+            return managedOBJ[objID].loader;
+        }
         #endregion
     }
 }
