@@ -7,7 +7,7 @@ namespace GameApplication {
     class CameraExample : Game {
         Grid grid = null;
         OBJLoader model = null;
-
+        Plane cameraPlane = null;
         //todo:set based on camera input
         protected Matrix4 viewMatrix = new Matrix4();
 
@@ -56,9 +56,13 @@ namespace GameApplication {
             grid.Render();
             GL.Enable(EnableCap.DepthTest);
             GL.Enable(EnableCap.Lighting);
-
-            GL.Color3(1f, 1f, 1f);
-            model.Render(true, false);
+            if (Plane.HalfSpace(cameraPlane,new Vector3(0f,0f,0f)) >= 0) {
+                GL.Color3(1f, 1f, 1f);
+                model.Render(true, false);
+            }
+            else {
+                Console.WriteLine("Green susane culled");
+            }
         }
         Matrix4 Move3DCamera(float timeStep, float moveSpeed = 10.0f) {
             //helper variables for mouse position
@@ -112,6 +116,16 @@ namespace GameApplication {
             Matrix4 cameraWorldPosition = position * orientation;
             //the view matrix is inverse of world
             Matrix4 cameraViewMatrix = Matrix4.Inverse(cameraWorldPosition);
+
+            right = new Vector3(cameraWorldPosition[0, 0], cameraWorldPosition[1, 0], cameraWorldPosition[2, 0]);
+            Vector3 left = new Vector3(-right.X, -right.Y, -right.Z);
+            Vector3 up = new Vector3(cameraWorldPosition[0, 1], cameraWorldPosition[1, 1], cameraWorldPosition[2, 1]);
+
+            right = Matrix4.MultiplyPoint(cameraWorldPosition, right);
+            left = Matrix4.MultiplyPoint(cameraWorldPosition, left);
+            up = Matrix4.MultiplyPoint(cameraWorldPosition, up);
+
+            cameraPlane = Plane.ComputePlane(left, right, up);
 
             return cameraViewMatrix;
         }

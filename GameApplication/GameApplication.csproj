@@ -60,6 +60,7 @@
     <Compile Include="Game.cs" />
     <Compile Include="GLSolarSystem.cs" />
     <Compile Include="Grid.cs" />
+    <Compile Include="HalfspaceCulling.cs" />
     <Compile Include="LightingExample.cs" />
     <Compile Include="LinesSample.cs" />
     <Compile Include="LookAtSample.cs" />
