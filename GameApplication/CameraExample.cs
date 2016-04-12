@@ -32,6 +32,8 @@ namespace GameApplication {
             GL.Enable(EnableCap.Lighting);
             GL.Enable(EnableCap.Light0);
 
+            cameraPlane = new Plane();
+
             Resize(MainGameWindow.Window.Width, MainGameWindow.Window.Height);
 
             grid = new Grid(true);

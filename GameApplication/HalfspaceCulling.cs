@@ -5,7 +5,7 @@ using Math_Implementation;
 
 namespace GameApplication {
     class Plane  : Game{
-        public Vector3 n;//plane normal. points x on the plane satisfy dot(n,x)=d
+        public Vector3 n = new Vector3(0f,0f,0f);//plane normal. points x on the plane satisfy dot(n,x)=d
         public float d = 0; //distance from origin, d=dot(n,p)
         public static Plane ComputePlane(Vector3 a, Vector3 b, Vector3 c) {
             Plane p = new Plane();
