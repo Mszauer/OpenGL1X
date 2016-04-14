@@ -13,14 +13,15 @@ namespace GameApplication {
             p.d = Vector3.Dot(p.n, a);
             return p;
         }
-        public static int HalfSpace(Plane p,Vector3 v) {
+        public static float HalfSpace(Plane p,Vector3 v) {
+            return (p.n.X*v.X) + (p.n.Y*v.Y) + (p.n.Z*v.Z) + p.d;
             /*
-            int result = (p.n.X*v.X) + (p.n.Y*v.Y) + (p.n.Z*v.Z) + p.d;
-            return result;
+            Vector4 N = new Vector4(p.n.X, p.n.Y, p.n.Z, 0f);
+            Vector4 PointOnPlane = new Vector4(p.n.X * p.d, p.n.Y * p.d, p.n.Z * p.d, 1f);
+            Vector4 V = PointOnPlane - new Vector4(v.X, v.Y, v.X, 1f);
+            return (int)Vector4.Dot(N,V);
             */
-            Vector4 v1 = new Vector4(p.n.X, p.n.Y, p.n.Z, p.d);
-            Vector4 v2 = new Vector4(v.X, v.Y, v.X, 1);
-            return (int)Vector4.Dot(v1, v2);
+
         }
 
     }
