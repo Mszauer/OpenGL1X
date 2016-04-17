@@ -8,7 +8,10 @@ namespace GameApplication {
         Grid grid = null;
         OBJLoader model = null;
         Plane cameraPlane = null;
-        //todo:set based on camera input
+
+        Plane[] frustum = new Plane[6];
+        float aspect = 0f;
+
         protected Matrix4 viewMatrix = new Matrix4();
 
         protected float Yaw = 0f; //y rotation of camera
@@ -20,11 +23,13 @@ namespace GameApplication {
         public override void Resize(int width, int height) {
             GL.Viewport(0, 0, width, height);
             GL.MatrixMode(MatrixMode.Projection);
-            float aspect = (float)width / (float)height;
+            aspect = (float)width / (float)height;
             Matrix4 perspective = Matrix4.Perspective(60.0f, aspect, 0.01f, 1000.0f);
             GL.LoadMatrix(Matrix4.Transpose(perspective).Matrix);
             GL.MatrixMode(MatrixMode.Modelview);
             GL.LoadIdentity();
+
+            
         }
         public override void Initialize() {
             GL.Enable(EnableCap.DepthTest);
@@ -43,6 +48,13 @@ namespace GameApplication {
             GL.Light(LightName.Light0, LightParameter.Ambient, new float[] { 0f, 1f, 0f, 1f });
             GL.Light(LightName.Light0, LightParameter.Diffuse, new float[] { 0f, 1f, 0f, 1f });
             GL.Light(LightName.Light0, LightParameter.Specular, new float[] { 1f, 1f, 1f, 1f });
+
+            for (int i = 0; i < 6; i++) {
+                frustum[i] = new Plane();
+            }
+            MouseState mouse = OpenTK.Input.Mouse.GetState();
+            LastMousePosition = new Vector2(mouse.X, mouse.Y);
+            viewMatrix = Move3DCamera(0f);
         }
         public override void Shutdown() {
             model.Destroy();
@@ -58,7 +70,14 @@ namespace GameApplication {
             grid.Render();
             GL.Enable(EnableCap.DepthTest);
             GL.Enable(EnableCap.Lighting);
-            if (Plane.HalfSpace(cameraPlane,new Vector3(0f,0f,0f)) >= 0) {
+
+
+
+            /*if (Plane.HalfSpace(cameraPlane,new Vector3(0f,0f,0f)) >= 0) {
+                GL.Color3(1f, 1f, 1f);
+                model.Render(true, false);
+            }*/
+            if (PointInFrustum(frustum,new Vector3(0f,0f,0f))) { 
                 GL.Color3(1f, 1f, 1f);
                 model.Render(true, false);
             }
@@ -129,7 +148,31 @@ namespace GameApplication {
 
             cameraPlane = Plane.ComputePlane(left, right, up);
 
+            Matrix4 perspective = Matrix4.Perspective(60.0f, aspect, 0.01f, 1000.0f);
+            Matrix4 mv = perspective * cameraViewMatrix;
+
+            Vector4 row1 = new Vector4(mv[0, 0], mv[0, 1], mv[0, 2], mv[0, 3]);
+            Vector4 row2 = new Vector4(mv[1, 0], mv[1, 1], mv[1, 2], mv[1, 3]);
+            Vector4 row3 = new Vector4(mv[2, 0], mv[2, 1], mv[2, 2], mv[2, 3]);
+            Vector4 row4 = new Vector4(mv[3, 0], mv[3, 1], mv[3, 2], mv[3, 3]);
+
+            frustum[0] = Plane.FromNumbers(row4 + row1);
+            frustum[1] = Plane.FromNumbers(row4 - row1);
+            frustum[2] = Plane.FromNumbers(row4 + row2);
+            frustum[3] = Plane.FromNumbers(row4 - row2);
+            frustum[4] = Plane.FromNumbers(row4 + row3);
+            frustum[5] = Plane.FromNumbers(row4 - row3);
+
             return cameraViewMatrix;
         }
+        public bool PointInFrustum(Plane[] frustum,Vector3 point) {
+            foreach(Plane plane in frustum) {
+                if(Plane.HalfSpace(plane, point) < 0) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        
     }
 }

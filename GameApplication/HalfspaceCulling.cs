@@ -4,7 +4,7 @@ using OpenTK.Input;
 using Math_Implementation;
 
 namespace GameApplication {
-    class Plane  : Game{
+    class Plane {
         public Vector3 n = new Vector3(0f,0f,0f);//plane normal. points x on the plane satisfy dot(n,x)=d
         public float d = 0; //distance from origin, d=dot(n,p)
         public static Plane ComputePlane(Vector3 a, Vector3 b, Vector3 c) {
@@ -22,6 +22,15 @@ namespace GameApplication {
             return (int)Vector4.Dot(N,V);
             */
 
+        }
+        public static Plane FromNumbers(Vector4 numbers) {
+            Plane p = new Plane();
+            p.n = new Vector3();
+            p.n.X = numbers.X;
+            p.n.Y = numbers.Y;
+            p.n.Z = numbers.Z;
+            p.d = numbers.W;
+            return p;
         }
 
     }
